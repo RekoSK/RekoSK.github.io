@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <clipPath id="s"><rect x="-22" y="-7" width="44" height="14" rx="1.5"/></clipPath>
+    <pattern id="h" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="2.5" height="5" fill="#0b0b0b"/></pattern>
+  </defs>
+  <!-- speed lines: it's falling fast -->
+  <g stroke="#f6f3ee" stroke-width="2.4" stroke-linecap="round" opacity=".55">
+    <path d="M19 4v9"/><path d="M29 2v12"/><path d="M39 5v8"/>
+  </g>
+  <!-- the "please don't drag" sign, tumbling -->
+  <g transform="translate(31 28) rotate(-28)">
+    <g clip-path="url(#s)">
+      <rect x="-22" y="-7" width="44" height="14" fill="#fe7700"/>
+      <rect x="-22" y="-7" width="8" height="14" fill="url(#h)"/>
+      <rect x="14" y="-7" width="8" height="14" fill="url(#h)"/>
+    </g>
+    <rect x="-11" y="-3" width="22" height="2.2" rx="1.1" fill="#0b0b0b"/>
+    <rect x="-8" y="1" width="16" height="2.2" rx="1.1" fill="#0b0b0b"/>
+  </g>
+  <!-- the ground it's about to hit, with impact marks -->
+  <path d="M8 54h48" stroke="#f6f3ee" stroke-width="2.6" stroke-linecap="round" opacity=".8"/>
+  <g stroke="#fe7700" stroke-width="2.4" stroke-linecap="round">
+    <path d="M24 49l-3-3"/><path d="M40 49l3-3"/><path d="M32 47v-3"/>
+  </g>
+</svg>

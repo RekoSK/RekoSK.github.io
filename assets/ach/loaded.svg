@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- the "loading…" sticker after it finally finished: green, with a tick; the arrow is the 90° turn that fixed it -->
+  <g fill="none" stroke="#fe7700" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M14 22a20 20 0 0 1 33-8"/>
+    <path d="M48 6v9h-9"/>
+  </g>
+  <g transform="rotate(-10 32 38)">
+    <rect x="7" y="29" width="50" height="19" rx="4" fill="#0b0b0b" transform="translate(1.5 2)"/>
+    <rect x="7" y="29" width="50" height="19" rx="4" fill="#35d265" stroke="#0b0b0b" stroke-width="2"/>
+    <path d="M24 38.5l5 5 11-10" fill="none" stroke="#062b12" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>

@@ -1,0 +1,69 @@
+/* rekosk.dev: the About section: text, the orange fills and the logo boxes */
+/* about */
+.about-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(32px,5vw,72px);align-items:start}
+.lead{margin:0 0 18px;font-size:clamp(22px,2.2vw,30px);line-height:1.35;font-weight:600;color:var(--white)}
+.lead b{color:var(--or);font-weight:800}
+.fill-hover{--fill:0;text-decoration:none;display:inline-block;white-space:nowrap;cursor:default;transition:--fill .6s cubic-bezier(.45,0,.4,1),border-color .4s;font-weight:700;border-bottom:2px dotted rgba(254,119,0,.6);background:linear-gradient(90deg,var(--or) calc(var(--fill) * 100%),var(--fog) calc(var(--fill) * 100% + .5px));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.fill-hover.goto{cursor:pointer}
+.fill-hover:hover{--fill:1;transition-duration:var(--fd,1.1s);border-bottom-color:var(--or)}
+.lead-hover{cursor:default}
+.lead-box{position:relative;display:inline-block;white-space:nowrap}
+/* the words fill orange in step with the wave: --fill (0→1) runs on the same timing as the line, each word maps it to its own span of the line (--a..--b, set by JS) */
+@property --fill{syntax:'<number>';inherits:true;initial-value:0}
+.lead-box{--fill:0;transition:--fill .6s cubic-bezier(.45,0,.4,1)}
+.lead-hover:hover .lead-box{--fill:1;transition-duration:var(--fd,1.1s)}
+.lead-name{--a:0;--b:.17}
+.lead-the{--a:.56;--b:.67}
+.lead-name,.lead-the{--p:clamp(0,calc((var(--fill) - var(--a)) / (var(--b) - var(--a))),1);color:var(--white);background:linear-gradient(90deg,var(--or) calc(var(--p) * 100%),var(--white) calc(var(--p) * 100% + .5px));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.lead-name{font-weight:800}
+.lead-the{font-weight:900}
+.lead-ul{position:absolute;left:-2%;bottom:-.3em;width:104%;height:.36em;overflow:visible;pointer-events:none}
+.lead-ul path{fill:none;stroke:var(--or);stroke-width:6;stroke-linecap:round;stroke-dasharray:1 2;stroke-dashoffset:1.02;transition:stroke-dashoffset .6s cubic-bezier(.45,0,.4,1)}
+.lead-hover:hover .lead-ul path{stroke-dashoffset:0;transition-duration:var(--fd,1.1s)}
+.about-p{margin:0 0 30px;max-width:36em;font-size:17px;line-height:1.75;color:var(--mid)}
+.now-list{display:flex;flex-direction:column;border-top:1px solid #2a2a2a}
+.now{display:grid;grid-template-columns:140px minmax(0,1fr) auto;align-items:center;gap:16px;min-height:64px;padding:0 6px;border-bottom:1px solid #2a2a2a;transition:padding .4s cubic-bezier(.2,.8,.2,1),background .3s}
+.now-fav{grid-template-columns:minmax(0,1fr) auto;grid-template-rows:auto auto;align-items:center;align-content:center;row-gap:4px;padding:18px 20px 18px 28px;cursor:pointer;border-left:4px solid transparent;border-radius:0 14px 14px 0;transition:padding .4s cubic-bezier(.2,.8,.2,1),background .35s,border-color .35s}
+.now-fav .now-k{grid-column:1 / -1;transition:color .35s}
+.now-fav:not(.open) .now-k{grid-column:1}
+.now-fav:not(.open) .now-v{display:none}
+.now-fav:not(.open){grid-template-rows:auto;row-gap:0}
+.now-fav.open{row-gap:14px}
+.now-fav .now-k{line-height:1.2}
+.now-fav .now-v{font-size:18px;font-weight:600;color:var(--white)}
+.fav-val{display:none;font-weight:900;letter-spacing:-.02em;font-size:clamp(28px,3.2vw,40px);line-height:1.1}
+.now-fav.open .fav-val{display:block;min-width:0}
+.now-fav .now-v{min-width:0}
+.lang-strip{display:block;overflow:hidden;animation:favPop .45s cubic-bezier(.34,1.56,.64,1)}
+.lang-track{display:flex;align-items:center;gap:22px;width:max-content}
+.lang-strip.scrolling{-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+.lang-strip.scrolling .lang-track{animation:langScroll var(--lang-dur,18s) linear infinite}
+.lang-strip.paused .lang-track{animation-play-state:paused}
+.lang-strip{padding:20px 0 30px}
+.lang-item{flex:none;position:relative;display:block;cursor:pointer;outline:none}
+.lang-item .fav-logo{transition:transform .35s cubic-bezier(.34,1.56,.64,1)}
+.lang-item:hover .fav-logo{transform:scale(1.06)}
+.lang-item.sel .fav-logo{transform:scale(1.25)}
+.lang-name{position:absolute;left:50%;top:100%;translate:-50% 0;font:700 13px/1.2 'Poppins',sans-serif;color:var(--gray);white-space:nowrap;opacity:0;transform:translateY(-4px);transition:opacity .25s,transform .3s;margin-top:6px}
+.lang-item.sel .lang-name{opacity:1;transform:none}
+.lang-item:focus-visible .fav-logo{outline:2px solid var(--or);outline-offset:4px;border-radius:6px}
+@keyframes langScroll{from{transform:translateX(0)}to{transform:translateX(calc(-50% - 11px))}}
+.lg-rust{filter:invert(1) drop-shadow(0 4px 10px rgba(0,0,0,.4))!important}
+@media (prefers-reduced-motion:reduce){.lang-strip.scrolling .lang-track{animation:none}.lang-strip.scrolling{overflow-x:auto}}
+.fav-logo{display:block;flex:none;transform-origin:center bottom;height:clamp(44px,4.4vw,60px);width:auto;max-width:none;filter:drop-shadow(0 4px 10px rgba(0,0,0,.4))}
+@keyframes favPop{from{opacity:0;transform:scale(.6) rotate(-8deg)}to{opacity:1;transform:none}}
+/* hover = the highlighted look */
+.now-fav:hover,.now-fav:focus-visible{padding:18px 20px 18px 28px;border-left-color:var(--or);background:linear-gradient(90deg,rgba(254,119,0,.2),rgba(254,119,0,.04) 70%)}
+.now-fav:hover .now-k,.now-fav:focus-visible .now-k{color:var(--or);font-weight:700}
+.now-fav:focus-visible{outline:none}
+.now:hover{padding-left:20px;background:#171717}
+.now-k{font-family:'Montserrat',monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--gray)}
+.now-v{font-size:18px;font-weight:600;color:var(--white)}
+.now .ico{color:var(--or);opacity:0;transform:translateX(-10px);transition:opacity .3s,transform .4s cubic-bezier(.34,1.56,.64,1)}
+.now:hover .ico{opacity:1;transform:none}
+
+.dbg-blinks{position:absolute;left:50%;top:calc(100% + 6px);translate:-50% 0;padding:2px 8px;border-radius:6px;background:#0b0b0b;box-shadow:inset 0 0 0 1px var(--or);color:var(--or);font:600 12px/1.4 'Montserrat',monospace;white-space:nowrap;pointer-events:none}
+
+.fav-desc{display:block;max-width:34em;margin:0 0 4px;font:400 13px/1.6 'Poppins',sans-serif;letter-spacing:0;color:var(--mid);white-space:normal}
+.lang-track:empty{display:none}
+.lang-strip:not(.scrolling){overflow:visible}

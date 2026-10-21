@@ -1,0 +1,82 @@
+/* rekosk.dev: the geocache logbook, its pages and the scratch-off codes */
+/* the logbook, opened: a dimmed focus view with the book in the middle (js/logbook.js openLog) */
+.lb{--pw:min(300px,40vw,calc((100vh - 140px) / 1.32));position:fixed;inset:0;z-index:300;display:grid;place-items:center}
+.lb-dim{position:absolute;inset:0;background:rgba(5,5,5,.78);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);opacity:0;transition:opacity .45s ease}
+.lb.on .lb-dim{opacity:1}
+.lb-stage{position:relative;width:calc(var(--pw) * 2);height:calc(var(--pw) * 1.32)}
+.lb-book{position:absolute;inset:0;perspective:2200px;transition:transform .6s cubic-bezier(.45,.05,.3,1);filter:drop-shadow(0 24px 40px rgba(0,0,0,.55))}
+.lb-book.shut{transform:translateX(-25%)}
+.lb-board,.lb-leaf{position:absolute;left:50%;top:0;width:50%;height:100%}
+.lb-board{border-radius:0 6px 6px 0;background:#d9c9a2;box-shadow:inset 0 0 0 3px #0b0b0b}
+.lb-leaf{transform-origin:left center;transform-style:preserve-3d;transition:transform .75s cubic-bezier(.45,.05,.3,1);cursor:pointer}
+.lb-leaf.flip{transform:rotateY(-180deg)}
+.lb-book.fast .lb-leaf{transition-duration:.42s}
+.lb-face{position:absolute;inset:0;overflow:hidden;-webkit-backface-visibility:hidden;backface-visibility:hidden}
+.lb-back{transform:rotateY(180deg)}
+.lb-paper{background:linear-gradient(90deg,rgba(0,0,0,.14),transparent 9%),repeating-linear-gradient(transparent 0 calc(var(--pw) * .085 - 1px),#c9bb98 calc(var(--pw) * .085 - 1px) calc(var(--pw) * .085)) 0 calc(var(--pw) * .16) / 100% calc(100% - var(--pw) * .24) no-repeat,#f6efdd;border:2px solid #0b0b0b;border-left-width:1px;border-radius:0 5px 5px 0}
+.lb-paper.lb-back{background:linear-gradient(270deg,rgba(0,0,0,.14),transparent 9%),repeating-linear-gradient(transparent 0 calc(var(--pw) * .085 - 1px),#c9bb98 calc(var(--pw) * .085 - 1px) calc(var(--pw) * .085)) 0 calc(var(--pw) * .16) / 100% calc(100% - var(--pw) * .24) no-repeat,#f6efdd;border-left-width:2px;border-right-width:1px;border-radius:5px 0 0 5px}
+.lb-pn{position:absolute;bottom:4%;right:7%;font:600 calc(var(--pw) * .045)/1 'Poppins',sans-serif;color:#9c8c68}
+.lb-back .lb-pn{right:auto;left:7%}
+.lb-cv{background:#efe3c6;border:3px solid #0b0b0b;border-radius:0 8px 8px 0}
+.lb-spine{position:absolute;left:0;top:0;bottom:0;width:20%;background:#fe7700;border-right:3px solid #0b0b0b}
+.lb-lbl{position:absolute;left:33%;right:13%;top:14%;padding:5% 0;text-align:center;background:#fff;border:2px solid #0b0b0b;font:800 calc(var(--pw) * .068)/1 'Poppins',sans-serif;letter-spacing:.03em;color:#0b0b0b}
+.lb-lines{position:absolute;left:33%;right:13%;top:46%;display:grid;gap:calc(var(--pw) * .07)}
+.lb-lines i{height:3px;border-radius:2px;background:#b9a983}
+.lb-lines i:last-child{width:70%}
+.lb-inside{background:linear-gradient(270deg,rgba(0,0,0,.18),transparent 10%),#d9c9a2;border:3px solid #0b0b0b;border-radius:8px 0 0 8px}
+/* the logbook's contents (js/logbook.js LB_PAGES): handwritten logs on the ruled lines, stamps they flow around, stickers on top */
+.lb-defs{position:absolute;width:0;height:0}
+.lb-txt{position:absolute;left:11%;right:6%;top:calc(var(--pw) * .1875);height:calc(var(--pw) * 1.02);overflow:hidden;line-height:calc(var(--pw) * .085)}
+.lb-back .lb-txt{left:6%;right:11%}
+.lb-log{margin:0;transform-origin:0 50%;overflow-wrap:break-word}
+.lb-log u{text-decoration-thickness:1px;text-underline-offset:2px}
+.lb-st{display:block;opacity:.88}
+.lb-r{float:right;margin:calc(var(--pw) * .012) 0 calc(var(--pw) * .01) calc(var(--pw) * .02)}
+.lb-l{float:left;margin:calc(var(--pw) * .012) calc(var(--pw) * .02) calc(var(--pw) * .01) 0}
+.lb-st svg,.lb-sk svg{display:block;width:100%;height:auto;overflow:visible}
+.lb-ink{fill:none;stroke:currentColor;filter:url(#lbInk)}
+.lb-sk{position:absolute;z-index:2;filter:drop-shadow(0 1px 1.5px rgba(0,0,0,.35))}
+.lb-note{position:absolute;left:12%;right:14%;top:5%;display:grid;gap:calc(var(--pw) * .016);padding:6% 6%;background:#fbf9f2;box-shadow:0 1px 3px rgba(0,0,0,.35);rotate:-1.5deg;font:500 calc(var(--pw) * .03)/1.4 'Poppins',sans-serif;color:#2b2925;text-align:center}
+.lb-note b{font-size:calc(var(--pw) * .062);font-weight:900;letter-spacing:.1em;color:var(--or)}
+.lb-note em{font-style:normal;font-weight:700;font-size:calc(var(--pw) * .038)}
+.lb-note i{font-style:normal;font-size:calc(var(--pw) * .028);color:#77736b}
+.lb-card{position:absolute;left:9%;right:11%;bottom:4%;aspect-ratio:1.6;padding:3.5% 4.5%;overflow:hidden;border-radius:calc(var(--pw) * .025);background:#f3f3f0;box-shadow:0 1px 3px rgba(0,0,0,.4);rotate:2.2deg;font:calc(var(--pw) * .0165)/1.16 'Times New Roman',Times,serif;color:#1d1d1b;text-align:justify}
+.lbc-logo{float:left;width:24%;margin:0 4% 1% 0}
+.lbc-t{display:block;margin:-1% 0 2%;text-align:center;font:700 1.95em/1.12 Arial,Helvetica,sans-serif;color:#3e9b3a}
+.lbc-h{display:block;margin-bottom:1%;font-size:1.9em;line-height:1.05}
+.lb-card p{margin:0}
+.lbc-url{margin-top:.5em!important;font-weight:700}
+.lbc-f{display:block;margin-top:2.5%;text-align:center;font:700 1.3em/1 Arial,Helvetica,sans-serif;color:#3e9b3a}
+.lb-zoomable{cursor:zoom-in;transition:scale .2s}
+.lb-zoomable:hover{scale:1.03}
+.lb-zoomable:focus-visible{outline:2px dashed var(--or);outline-offset:3px}
+.lb-zoom{position:absolute;inset:0;z-index:5;background:rgba(5,5,5,0);transition:background .4s;cursor:zoom-out}
+.lb-zoom.on{background:rgba(5,5,5,.62)}
+.lb-zoom>*{position:absolute;cursor:zoom-out;scale:1!important;box-shadow:0 18px 40px rgba(0,0,0,.5)}
+/* the scratch-off paper inside the back cover (js/logbook.js LB_END / scScrape): the foil is a canvas over "duhel" */
+.lb-note.lb-sc{left:14%;right:12%;top:7%;rotate:1.5deg;grid-template-columns:minmax(0,1fr)}
+.lb-sc b{font-size:calc(var(--pw) * .05);letter-spacing:.08em} /* "SECRET CODES" is longer than "GEOCACHE": smaller, so the column (and the foil) stays centred */
+.lb-sc em{font-size:calc(var(--pw) * .03);color:#77736b}
+.sc-box{position:relative;display:block;margin:2% 0 1%;aspect-ratio:600 / 180;background:#fff;border:1px dashed #b8b2a4;border-radius:3px}
+.sc-txt{position:absolute;inset:0;display:grid;place-items:center;text-align:center;font:600 calc(var(--pw) * .048)/1.3 'Montserrat',monospace;letter-spacing:.06em;color:#2b2925}
+.sc-foil{position:absolute;inset:0;width:100%;height:100%;border-radius:2px}
+.sc-flake{position:fixed;z-index:305;pointer-events:none;margin:-2px 0 0 -2px;border-radius:1px;background:linear-gradient(135deg,#f4f6f8,#9aa0a7);box-shadow:0 0 0 .5px rgba(0,0,0,.25)}
+/* the coin tilts onto its edge while it scrapes, and judders a little */
+.bh-coin svg{transform-origin:50% 85%;transition:transform .16s ease-out}
+.bh-coin.foil svg{transform:perspective(220px) rotateX(40deg) rotateZ(-10deg);animation:scJud .09s linear infinite alternate}
+@keyframes scJud{to{translate:.8px -.6px}}
+.lb-arr,.lb-x{all:unset;box-sizing:border-box;position:absolute;display:grid;place-items:center;width:48px;height:48px;border-radius:50%;background:#f4f1ea;color:#0b0b0b;box-shadow:0 0 0 2px #0b0b0b,0 8px 18px rgba(0,0,0,.4);cursor:pointer;opacity:0;transition:opacity .3s .25s,scale .2s,background .2s}
+.lb.on .lb-arr,.lb.on .lb-x{opacity:1}
+.lb-arr:hover,.lb-x:hover{background:var(--or);scale:1.08}
+.lb-arr:focus-visible,.lb-x:focus-visible{outline:2px dashed var(--or);outline-offset:4px}
+.lb-arr[disabled]{opacity:.3!important;cursor:default;background:#f4f1ea;scale:1}
+.lb-arr svg,.lb-x svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.lb-prev{left:-72px;top:50%;translate:0 -50%}
+.lb-next{right:-72px;top:50%;translate:0 -50%}
+.lb-x{right:-72px;top:-8px;width:42px;height:42px}
+@media (max-width:760px){.lb{--pw:min(44vw,calc((100vh - 220px) / 1.32))}.lb-prev,.lb-next{top:auto;bottom:-70px;translate:none}.lb-prev{left:calc(50% - 60px)}.lb-next{right:calc(50% - 60px)}.lb-x{right:0;top:-58px}}
+@media (prefers-reduced-motion:reduce){.lb-book,.lb-leaf,.lb-dim{transition:none}}
+.gc-hole svg,.gc-cache svg,.gc-log svg{display:block;width:100%;height:100%;overflow:visible}
+.gc-lid{transform-box:view-box;transform-origin:90px 22px}
+.gc-dirt{width:6px;height:6px;border-radius:50%;background:#7a5230;border:1.5px solid #0b0b0b;z-index:7}
+.bh-stk.gc-busy{pointer-events:none}

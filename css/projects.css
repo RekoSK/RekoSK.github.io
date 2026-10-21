@@ -1,0 +1,66 @@
+/* rekosk.dev: the Projects section: cards, locked cards and the featured DJ disc */
+/* projects */
+.proj-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(16px,2vw,28px)}
+.card{--rx:0deg;--ry:0deg;--mx:50%;--my:50%;position:relative;perspective:1100px}
+.card.wide{grid-column:span 2}
+.proj-grid > .card:only-child{grid-column:1/-1} /* a lone project takes the whole row */
+.card-in{position:relative;height:100%;display:flex;flex-direction:column;background:var(--card);border-radius:22px;overflow:hidden;box-shadow:0 0 0 1px #262626;transform:rotateX(var(--rx)) rotateY(var(--ry));transition:transform .5s cubic-bezier(.2,.8,.2,1),box-shadow .35s}
+.card:hover .card-in{box-shadow:0 0 0 1.5px var(--or),0 30px 60px -24px rgba(254,119,0,.35)}
+.card-in::after{content:"";position:absolute;inset:0;background:radial-gradient(420px circle at var(--mx) var(--my),rgba(254,119,0,.16),transparent 60%);opacity:0;transition:opacity .3s;pointer-events:none}
+.card:hover .card-in::after{opacity:1}
+.wide .card-in{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr)}
+.cover{position:relative;height:clamp(210px,19vw,260px);overflow:hidden;isolation:isolate}
+.wide .cover{height:auto;min-height:320px}
+.cv-1{background:radial-gradient(rgba(0,0,0,.28) 1.4px,transparent 2px) 0 0/10px 10px,var(--or);color:#0b0b0b}
+.cv-2{background:radial-gradient(rgba(254,119,0,.25) 1.2px,transparent 1.8px) 0 0/12px 12px,#1f1f1f;color:var(--or)}
+.cv-3{background:radial-gradient(rgba(255,255,255,.08) 1.2px,transparent 1.8px) 0 0/9px 9px,#3a3937;color:var(--white)}
+.cv-4{background:repeating-linear-gradient(-45deg,#0b0b0b 0 22px,#1a1a1a 22px 44px);color:var(--or)}
+/* project logo on a cover (black art on the dots) */
+.cv-logo{position:absolute;left:50%;top:50%;height:96%;width:auto;max-width:96%;object-fit:contain;translate:-50% -50%;pointer-events:none;user-select:none}
+/* locked projects: blurred under a calm dark veil, "Coming soon." and a steel chain hanging in a U between the top
+   corners with a padlock at its lowest point (drawn by js/projects.js to fit the card); the lock sways slowly.
+   A click shakes the card and flashes it red with the locked buzz, like locked steps in the Achievements window */
+.card.locked{cursor:not-allowed}
+.card.locked .cover,.card.locked .card-body{filter:blur(8px) saturate(.5);opacity:.6;user-select:none}
+.card.locked:hover .card-in{box-shadow:0 0 0 1.5px #2e2e2e,0 30px 60px -24px rgba(0,0,0,.6)}
+.card.locked .card-in::after{display:none}
+.lock-veil{position:absolute;inset:0;z-index:3;background:rgba(8,8,8,.5);pointer-events:none;overflow:hidden}
+.lock-txt{position:absolute;left:0;right:0;top:42%;text-align:center;opacity:.6;font:600 clamp(19px,1.8vw,24px)/1.2 'Poppins',sans-serif;letter-spacing:.01em;color:#cfcfcf;text-shadow:0 2px 14px rgba(0,0,0,.7)}
+.chain-svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible;opacity:.55;filter:drop-shadow(0 6px 8px rgba(0,0,0,.45))}
+.cl-out *{fill:none;stroke:#0b0b0b;stroke-width:5;stroke-linecap:round}
+.cl-in *{fill:none;stroke:#4b4f55;stroke-width:2.4;stroke-linecap:round}
+.cl-in line{stroke:#5b6067}
+.lk{transform-box:fill-box;transform-origin:50% 6%;animation:lkSway 7s ease-in-out infinite}
+@keyframes lkSway{0%,100%{rotate:-3deg}50%{rotate:3deg}}
+.card.locked.deny .card-in{animation:cardDenyShake .42s cubic-bezier(.36,.07,.19,.97),cardDenyRed .9s ease-out}
+.card.locked.deny .lock-veil{animation:veilDenyRed .9s ease-out}
+.card.locked.deny .lk{animation:lkJiggle .5s cubic-bezier(.36,.07,.19,.97)}
+@keyframes cardDenyShake{15%{translate:-7px 0;rotate:-.5deg}30%{translate:7px 0;rotate:.5deg}45%{translate:-5px 0}60%{translate:5px 0}75%{translate:-2px 0}}
+@keyframes cardDenyRed{0%,45%{box-shadow:0 0 0 2px #e5262f,0 0 28px rgba(229,38,47,.45)}}
+@keyframes veilDenyRed{0%,45%{background:rgba(100,12,16,.55)}}
+@keyframes lkJiggle{20%{rotate:-14deg}45%{rotate:10deg}70%{rotate:-5deg}}
+@media (prefers-reduced-motion:reduce){.lk{animation:none}.card.locked.deny .card-in{animation:cardDenyRed .9s ease-out}.card.locked.deny .lk{animation:none}}
+.cv-tape{position:absolute;left:50%;top:12px;width:96px;height:26px;margin-left:-48px;background:rgba(230,226,220,.24);transform:rotate(-4deg)}
+.badge{position:absolute;left:24px;top:22px;width:104px;height:104px;animation:spin 14s linear infinite;transition:scale .4s cubic-bezier(.34,1.56,.64,1)}
+.card:hover .badge{scale:1.14}
+.badge circle{fill:#0b0b0b}
+.badge .badge-dot{fill:var(--or)}
+.badge text{fill:var(--or);font:700 12.5px 'Poppins',sans-serif;letter-spacing:.12em}
+/* the featured badge is a record: js/projects.js spins it, grab and turn it to scratch */
+.badge.disc{animation:none;cursor:grab;touch-action:none;-webkit-user-select:none;user-select:none}
+.card .badge.scr{cursor:grabbing;scale:1.06}
+@keyframes spin{to{transform:rotate(360deg)}}
+.card-body{display:flex;flex-direction:column;gap:12px;flex:1;padding:22px 24px 22px}
+.wide .card-body{justify-content:center;padding:32px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{padding:6px 11px;border-radius:999px;background:#232323;color:var(--mid);font-family:'Montserrat',monospace;font-size:12px;transition:background .2s,color .2s,transform .3s cubic-bezier(.34,1.56,.64,1)}
+.chip:hover{background:var(--or);color:#0b0b0b;transform:rotate(-4deg) scale(1.06)}
+.card h3{margin:0;font-size:clamp(22px,2vw,28px);font-weight:700;line-height:1.2;letter-spacing:-.01em;color:var(--white)}
+.card p{margin:0;font-size:15px;line-height:1.65;color:var(--gray)}
+.card-link{display:inline-flex;align-items:center;gap:8px;align-self:flex-start;margin-top:auto;min-height:44px;font-weight:600;color:var(--or);text-decoration:none}
+.card-link .ico{width:18px;height:18px;transition:transform .35s cubic-bezier(.34,1.56,.64,1)}
+.card-link:hover{color:var(--or2)}
+.card-link:hover .ico{transform:translate(3px,-3px)}
+.more-row{display:flex;justify-content:center;margin-top:clamp(28px,4vw,48px)}
+@media (max-width:980px){.proj-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:680px){.proj-grid{grid-template-columns:minmax(0,1fr)}.card.wide{grid-column:auto}.wide .card-in{display:flex}.wide .cover{min-height:0;height:230px}.wide .card-body{padding:22px 24px}}

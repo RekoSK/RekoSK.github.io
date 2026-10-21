@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- a phone full of reels: stacked video cards sliding up, a play button, and a swipe arrow at the side -->
+  <g stroke="#0b0b0b" stroke-width="2" stroke-linejoin="round">
+    <rect x="16" y="5" width="28" height="54" rx="6" fill="#2a2a2a"/>
+    <rect x="19.5" y="11" width="21" height="42" rx="2.5" fill="#121212" stroke-width="1.6"/>
+    <rect x="21.5" y="13" width="17" height="11" rx="2" fill="#5f5f5f" stroke-width="1.4"/>
+    <rect x="21.5" y="26.5" width="17" height="24" rx="2" fill="#fe7700" stroke-width="1.6"/>
+    <path d="M27.5 33v11l9-5.5Z" fill="#f4f1ea" stroke-width="1.6"/>
+    <path d="M27 8h6" stroke-linecap="round" stroke-width="1.8"/>
+  </g>
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M52 18V44M47 39l5 5 5-5" stroke="#0b0b0b" stroke-width="6"/>
+    <path d="M52 18V44M47 39l5 5 5-5" stroke="#f4f1ea" stroke-width="3"/>
+  </g>
+</svg>

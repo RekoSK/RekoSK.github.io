@@ -1,0 +1,41 @@
+/* rekosk.dev: the Sound button and the speaker in the lake */
+/* sound controls */
+.rk .snd-x{display:none}
+.rk.muted .snd-wave{display:none}
+.rk.muted .snd-x{display:inline}
+/* the speaker in the lake: dragged out of the Sound button, it floats in the lake's middle */
+#soundBtn{touch-action:none}
+#soundBtn.snd-out .ico{border-radius:50%;outline:1.5px dashed currentColor;outline-offset:1px;opacity:.45;transform:none}
+#soundBtn.snd-out .ico *{visibility:hidden}
+html.snd-dragging,html.snd-dragging *{cursor:grabbing!important}
+.snd-fly,.lake-snd{box-sizing:border-box;display:grid;place-items:center;border-radius:50%;background:#f4f1ea;border:2px solid #0b0b0b;color:#0b0b0b}
+.snd-fly{position:fixed;z-index:300;pointer-events:none;translate:-50% -50%;box-shadow:0 10px 18px rgba(0,0,0,.35);transition:scale .2s cubic-bezier(.34,1.56,.64,1)}
+.snd-fly.aim{scale:1.12}
+.snd-fly .ico,.lake-snd .ico{width:58%;height:58%;stroke-width:2.2;overflow:visible}
+.rk .snd-fly .snd-x,.rk .lake-snd .snd-x,.rk.muted .snd-fly .snd-wave,.rk.muted .lake-snd .snd-wave{display:inline}
+.snd-fly .snd-wave,.lake-snd .snd-wave{transform-box:view-box;transform-origin:11px 12px;transition:opacity .25s,transform .35s cubic-bezier(.4,0,.2,1)}
+.snd-fly .snd-wave+.snd-wave,.lake-snd .snd-wave+.snd-wave{transition-delay:.08s}
+.snd-fly .snd-x,.lake-snd .snd-x{stroke-dasharray:9;stroke-dashoffset:9;transition:stroke-dashoffset .22s ease-out .25s}
+.snd-fly .snd-x+.snd-x,.lake-snd .snd-x+.snd-x{transition-delay:.4s}
+.snd-fly.x .snd-wave,.lake-snd.x .snd-wave{opacity:0;transform:scale(.4)}
+.snd-fly.x .snd-x,.lake-snd.x .snd-x{stroke-dashoffset:0}
+.lake-snd{position:absolute;left:var(--x);top:var(--y);translate:-50% -50%;width:8.5%;aspect-ratio:1;z-index:7;padding:0;cursor:pointer;font:inherit;box-shadow:0 5px 0 rgba(11,11,11,.35);transition:scale .2s}
+.lake-snd:hover{scale:1.08}
+.lake-snd:focus-visible{outline:2px dashed var(--or);outline-offset:3px}
+.lake-snd .ico{animation:lakeBob 2.6s ease-in-out infinite}
+.map.lake-muted .lake-snd{animation:lakeRock 3.4s ease-in-out infinite}
+@keyframes lakeBob{50%{transform:translateY(1.5px)}}
+@keyframes lakeRock{0%,100%{rotate:-4deg}50%{rotate:4deg}}
+.lake-ring{position:absolute;left:var(--x);top:var(--y);translate:-50% -50%;width:8.5%;aspect-ratio:1;border-radius:50%;border:2px solid rgba(255,255,255,.8);z-index:6;pointer-events:none;opacity:0}
+.map.lake-muted .lake-ring:not(.splash){animation:lakeRing 2.8s ease-out infinite}
+.lake-ring.splash.go{animation:lakeRing .9s ease-out both;border-width:3px}
+@keyframes lakeRing{0%{opacity:.9;scale:.9}100%{opacity:0;scale:2.1}}
+.lake-shade{opacity:0;transition:opacity 1s ease;pointer-events:none}
+.map.lake-aim .lake-shade{opacity:.35;transition-duration:.3s}
+.map.lake-muted .lake-shade{opacity:1}
+@media (prefers-reduced-motion:reduce){.lake-snd .ico,.map.lake-muted .lake-snd,.map.lake-muted .lake-ring:not(.splash){animation:none}}
+.snd-hint{all:unset;box-sizing:border-box;position:absolute;z-index:45;left:50%;bottom:28px;transform:translateX(-50%);display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 20px;border-radius:999px;font:600 14px/1 'Poppins',sans-serif;color:#0b0b0b;background:var(--or);cursor:pointer;transition:background .25s}
+.snd-hint:hover{background:var(--white)}
+.snd-hint:focus-visible{outline:2px dashed var(--or);outline-offset:3px}
+.snd-hint[hidden],.ph-done .snd-hint{display:none}
+@media (max-width:600px){.snd-hint{bottom:86px}}

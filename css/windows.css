@@ -1,0 +1,117 @@
+/* rekosk.dev: the movable "program" windows, photo windows, video polaroids and the video control bar */
+/* movable "program" window (opened from the Achievements tab) */
+.win{position:fixed;z-index:95;left:0;top:0;width:min(560px,92vw);height:min(400px,70vh);display:flex;flex-direction:column;border-radius:14px;background:#121212;box-shadow:0 0 0 2px #0b0b0b,0 0 0 4px var(--or),0 30px 60px rgba(0,0,0,.6);overflow:hidden;transform-origin:center;animation:winIn .35s cubic-bezier(.34,1.56,.64,1)}
+.win[hidden]{display:none}
+.win.closing{animation:winOut .2s ease-in forwards}
+@keyframes winIn{from{opacity:0;scale:.85}}
+@keyframes winOut{to{opacity:0;scale:.9}}
+.win-bar{flex:none;display:flex;align-items:center;justify-content:space-between;gap:12px;height:44px;padding:0 6px 0 16px;background:var(--or);color:#0b0b0b;cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none}
+.win.moving .win-bar{cursor:grabbing}
+.win-title{font:800 15px/1 'Poppins',sans-serif;letter-spacing:-.01em}
+/* data-glitch: part of a window title that glitches every few seconds (an RGB split that jitters, then snaps back) */
+.win-glitch{position:relative;display:inline-block;animation:winGlitch 3.2s steps(1) infinite}
+.win-glitch::before,.win-glitch::after{content:attr(data-t);position:absolute;inset:0;opacity:0;pointer-events:none}
+.win-glitch::before{color:#fff;animation:winGlitchA 3.2s steps(1) infinite}
+.win-glitch::after{color:#1a6dff;animation:winGlitchB 3.2s steps(1) infinite}
+@keyframes winGlitch{0%,86%,100%{transform:none}88%{transform:translate(1px,-1px) skewX(-12deg)}90%{transform:translate(-2px,0)}92%{transform:translate(1px,1px) skewX(8deg)}94%{transform:none}96%{transform:translate(-1px,0)}}
+@keyframes winGlitchA{0%,86%,98%,100%{opacity:0}87%{opacity:.9;transform:translate(-2px,0);clip-path:inset(0 0 55% 0)}91%{opacity:.9;transform:translate(2px,0);clip-path:inset(40% 0 20% 0)}95%{opacity:.9;transform:translate(-1px,0);clip-path:inset(70% 0 0 0)}}
+@keyframes winGlitchB{0%,86%,98%,100%{opacity:0}88%{opacity:.85;transform:translate(2px,0);clip-path:inset(50% 0 0 0)}92%{opacity:.85;transform:translate(-2px,0);clip-path:inset(0 0 60% 0)}96%{opacity:.85;transform:translate(1px,0);clip-path:inset(20% 0 45% 0)}}
+@media (prefers-reduced-motion:reduce){.win-glitch,.win-glitch::before,.win-glitch::after{animation:none}}
+/* a video with its own music (data-music): three little bars dance next to its title while the tune plays */
+.win-tune{display:inline-flex;align-items:flex-end;gap:2px;height:11px;margin-left:9px;vertical-align:-1px;opacity:0;transition:opacity .4s}
+.win-tune i{width:3px;height:100%;border-radius:1px;background:#0b0b0b;transform-origin:50% 100%;scale:1 .3;animation:winTune .9s ease-in-out infinite alternate}
+.win-tune i:nth-child(2){animation-duration:.7s;animation-delay:-.3s}
+.win-tune i:nth-child(3){animation-duration:1.1s;animation-delay:-.6s}
+.tune-live .photo-win.has-tune:not(.paused) .win-tune{opacity:1}
+@keyframes winTune{from{scale:1 .25}to{scale:1 1}}
+@media (prefers-reduced-motion:reduce){.win-tune i{animation:none;scale:1 .6}}
+.win-x{all:unset;box-sizing:border-box;display:grid;place-items:center;width:32px;height:32px;border-radius:8px;cursor:pointer;color:#0b0b0b;transition:background .2s,color .2s}
+.win-x:hover{background:#0b0b0b;color:var(--or)}
+.win-x svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2.6;stroke-linecap:round}
+.win-rz{position:absolute;z-index:3;touch-action:none}
+.win-rz[data-d=n],.win-rz[data-d=s]{left:12px;right:12px;height:8px;cursor:ns-resize}
+.win-rz[data-d=n]{top:0}.win-rz[data-d=s]{bottom:0}
+.win-rz[data-d=e],.win-rz[data-d=w]{top:12px;bottom:12px;width:8px;cursor:ew-resize}
+.win-rz[data-d=e]{right:0}.win-rz[data-d=w]{left:0}
+.win-rz[data-d=ne],.win-rz[data-d=nw],.win-rz[data-d=se],.win-rz[data-d=sw]{width:16px;height:16px}
+.win-rz[data-d=ne]{top:0;right:0;cursor:nesw-resize}.win-rz[data-d=sw]{bottom:0;left:0;cursor:nesw-resize}
+.win-rz[data-d=nw]{top:0;left:0;cursor:nwse-resize}.win-rz[data-d=se]{bottom:0;right:0;cursor:nwse-resize}
+.win.sizing{user-select:none}
+.win-view{flex:1;min-height:0;overflow:auto;background:radial-gradient(rgba(255,255,255,.04) 1px,transparent 1.5px) 0 0/14px 14px,#121212}
+
+/* map polaroids that open a photo window (see "photo windows" in js/photo-windows.js): 3 per row, wrapping */
+.pola-grid{flex-wrap:wrap;row-gap:12px;overflow:visible}
+.pola-grid .pola{padding-bottom:13px} /* no caption: just the thicker polaroid bottom edge */
+button.pola-img{width:100%;margin:0;padding:0;border:0;font:inherit;color:inherit;cursor:zoom-in;-webkit-appearance:none;appearance:none}
+button.pola-img:focus-visible{outline:2px dashed var(--or);outline-offset:3px}
+button.pola-img img{transition:scale .35s cubic-bezier(.34,1.56,.64,1)}
+button.pola-img:hover img{scale:1.08}
+/* photo windows: same look as the Achievements window, the photo scales with it */
+.photo-win:focus{outline:none}
+.photo-view{flex:1;min-height:0;display:grid;place-items:center;overflow:hidden;background:radial-gradient(rgba(255,255,255,.04) 1px,transparent 1.5px) 0 0/14px 14px,#0b0b0b}
+.photo-view img{display:block;width:100%;height:100%;object-fit:contain;pointer-events:none;user-select:none;-webkit-user-select:none}
+.win.nudge{animation:winNudge .45s cubic-bezier(.34,1.56,.64,1)}
+@keyframes winNudge{30%{scale:1.04}60%{scale:.98}}
+
+@media (prefers-reduced-motion:reduce){.win.nudge{animation:none}button.pola-img img{transition:none}}
+/* "find the guy": the orange pencil circle drawn over a photo (window and polaroid), see "find the guy" in js/photo-windows.js */
+.photo-view{position:relative}
+.find-svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}
+.find-ring{fill:none;stroke:var(--or);stroke-width:9;stroke-linecap:round;stroke-linejoin:round;opacity:.92;filter:url(#pencilRough)}
+.pola-img .find-ring{stroke-width:22}
+.find-svg.drawing .find-ring{stroke-dasharray:1 1;stroke-dashoffset:1;animation:pencilDraw .85s cubic-bezier(.45,.05,.55,.95) forwards}
+@keyframes pencilDraw{to{stroke-dashoffset:0}}
+.pola-img .find-svg.drawing .find-ring{animation-duration:1.05s;animation-delay:.3s} /* the polaroid's own pencil: a beat later, a bit slower */
+button.pola-img .find-svg{transition:scale .35s cubic-bezier(.34,1.56,.64,1)}
+button.pola-img:hover .find-svg{scale:1.08}
+/* a video polaroid: full row, 16:9, with a play badge; opens a photo window that plays the clip (data-video in js/photo-windows.js) */
+.pola-grid .pola-wide{flex-basis:100%;rotate:-1deg}
+.pola-wide .pola-img{aspect-ratio:16 / 9}
+.pola-wide:hover{rotate:0deg;scale:1.03}
+.vid-play{position:absolute;left:50%;top:50%;z-index:1;display:grid;place-items:center;width:46px;height:46px;margin:-23px 0 0 -23px;border-radius:50%;background:var(--or);box-shadow:0 0 0 3px #0b0b0b,0 6px 14px rgba(0,0,0,.45);pointer-events:none;transition:scale .35s cubic-bezier(.34,1.56,.64,1),opacity .25s}
+.vid-play svg{width:22px;height:22px;margin-left:1px;fill:#0b0b0b} /* 1px: the triangle's visual centre */
+.photo-vid{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#0b0b0b;cursor:pointer}
+.vid-play{width:64px;height:64px;margin:-32px 0 0 -32px;opacity:0;scale:.6}
+.vid-play svg{width:30px;height:30px}
+.photo-win.paused .vid-play{opacity:1;scale:1}
+/* the video window's control bar (js/video-bar.js): hand-drawn play/pause, time, a pencil progress line */
+.vid-bar{--p:0%;--g:0%;flex:none;display:flex;gap:8px;height:52px;padding:7px 8px 8px;background:#121212;border-top:2px solid #0b0b0b;animation:vidBarIn .5s .15s cubic-bezier(.34,1.56,.64,1) backwards}
+@keyframes vidBarIn{from{translate:0 100%;opacity:0}}
+.vid-btn{all:unset;box-sizing:border-box;flex:none;display:grid;place-items:center;width:44px;height:37px;border-radius:9px 7px 10px 8px;background:var(--or);color:#0b0b0b;cursor:pointer;box-shadow:0 3px 0 #a84f00;transition:translate .15s,box-shadow .15s,rotate .3s cubic-bezier(.34,1.56,.64,1)}
+.vid-btn:hover{rotate:-4deg}
+.vid-btn:active{translate:0 3px;box-shadow:0 0 0 #a84f00}
+.vid-btn:focus-visible,.vid-track:focus-visible{outline:2px dashed var(--or);outline-offset:3px}
+.vid-btn svg{width:22px;height:22px;overflow:visible;fill:none;stroke:currentColor;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.vid-btn .i-play,.vid-btn .i-pause{transform-origin:12px 12px;transition:scale .3s cubic-bezier(.34,1.56,.64,1),rotate .3s cubic-bezier(.34,1.56,.64,1),opacity .2s}
+.vid-btn .i-play{fill:currentColor;scale:0;rotate:-90deg;opacity:0}
+.photo-win.paused .vid-btn .i-play{scale:1;rotate:0deg;opacity:1}
+.photo-win.paused .vid-btn .i-pause{scale:0;rotate:90deg;opacity:0}
+.vid-track{flex:1;min-width:0;display:flex;align-items:center;gap:12px;padding:0 14px;border-radius:8px 10px 7px 9px;background:#0b0b0b;box-shadow:inset 0 0 0 1.5px #2a2a2a;cursor:pointer;touch-action:none;user-select:none;-webkit-user-select:none;transition:box-shadow .2s}
+.vid-track:hover,.vid-bar.scrubbing .vid-track{box-shadow:inset 0 0 0 1.5px var(--or)}
+.vid-time{flex:none;font-size:13px;color:var(--fog);white-space:nowrap}
+.vid-time b{font-weight:700;color:var(--or)}
+.vid-time i{font-style:normal;margin-left:5px;color:var(--gray)}
+.vid-line{position:relative;flex:1;height:20px;margin:0 7px}
+.vid-line svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.vid-line path{fill:none;stroke-linecap:round;vector-effect:non-scaling-stroke}
+.vl-bg path{stroke:#3a3a3a;stroke-width:4}
+.vl-fg{clip-path:inset(-6px calc(100% - var(--p)) -6px -6px)}
+.vl-fg path{stroke:var(--or);stroke-width:5}
+.vid-knob,.vid-ghost{position:absolute;top:50%;left:var(--p);width:14px;height:14px;margin:-7px 0 0 -7px;border-radius:50% 45% 55% 48%;background:var(--white);box-shadow:0 0 0 3px var(--or);pointer-events:none;transition:scale .25s cubic-bezier(.34,1.56,.64,1)}
+.photo-win:not(.paused) .vid-knob{animation:vidKnob 1.1s ease-in-out infinite}
+@keyframes vidKnob{50%{translate:0 -2px;rotate:20deg}}
+.vid-track:hover .vid-knob{scale:1.25}
+.vid-bar.scrubbing .vid-knob{scale:1.5;animation:none}
+.vid-ghost{left:var(--g);width:4px;height:16px;margin:-8px 0 0 -2px;border-radius:2px;background:var(--or);box-shadow:none;opacity:0;transition:opacity .2s}
+.vid-track:hover .vid-ghost{opacity:.45}
+.vid-bar.scrubbing .vid-ghost{opacity:0}
+/* the knob rides on a full-width layer moved with transform (smooth sub-pixel steps, no relayout every frame) */
+.vid-pos{position:absolute;inset:0;transform:translateX(var(--p));pointer-events:none;will-change:transform}
+.vid-pos .vid-knob{left:0}
+.vl-fg{will-change:clip-path}
+.vid-bar.looped .vid-line{animation:vidLoop .45s cubic-bezier(.34,1.56,.64,1)}
+@keyframes vidLoop{30%{scale:1 1.6}}
+@media (prefers-reduced-motion:reduce){.vid-bar,.vid-bar.looped .vid-line,.photo-win:not(.paused) .vid-knob{animation:none}.vid-btn .i-play,.vid-btn .i-pause{transition:opacity .2s}}
+
+/* a link in a map card (Geocaching.com): highlighted like "waypoints", wraps with the text */
+.spot-card a.fill-hover{display:inline;white-space:normal;text-decoration:none}

@@ -1,0 +1,26 @@
+/* rekosk.dev: duhel_railways.run, the minecart minigame */
+/* ---------- duhel_railways.run (minigame window, opened by "duhel" in the terminal) ---------- */
+.rail-win{width:min(620px,94vw);height:min(520px,82vh)}
+.rr-stage{position:relative;overflow:hidden;touch-action:none;user-select:none;-webkit-user-select:none;--cs:60px}
+.rr-grid{position:absolute;left:0;top:0;z-index:1;display:grid;grid-template-columns:repeat(3,var(--cs));grid-template-rows:repeat(3,var(--cs));border-radius:10px;background:#171717;box-shadow:0 0 0 2px #0b0b0b,0 0 0 4px #2c2c2c,0 14px 30px rgba(0,0,0,.45)}
+.rr-grid i{margin:3px;border:1.5px dashed #2f2f2f;border-radius:7px;transition:background .2s,border-color .2s,scale .3s cubic-bezier(.34,1.56,.64,1)}
+.rr-grid i.hot{background:rgba(254,119,0,.13);border-color:var(--or);scale:1.04}
+.rr-item{position:absolute;left:0;top:0;z-index:2;width:var(--cs);height:var(--cs);cursor:grab;touch-action:none;will-change:transform}
+.rr-item.placed{z-index:3}
+.rr-item.rr-cart{z-index:4}
+.rr-item.held{z-index:6;cursor:grabbing}
+.rr-item.held .rr-rot{filter:drop-shadow(0 10px 10px rgba(0,0,0,.55))}
+.rr-item.snap{transition:transform .28s cubic-bezier(.34,1.56,.64,1)}
+.rr-rot{width:100%;height:100%;transition:rotate .45s cubic-bezier(.34,1.56,.64,1)}
+.rr-rot svg{display:block;width:100%;height:100%;overflow:visible}
+.rr-rot .rr-c,.rr-item.curve .rr-s{display:none}
+.rr-item.curve .rr-c{display:block}
+.rr-item.turn .rr-rot{animation:rrTurn .45s cubic-bezier(.34,1.56,.64,1)}
+@keyframes rrTurn{40%{scale:1.12}}
+.rr-wire{stroke:#5e1f1f;transition:stroke .3s}
+.rr-item.on .rr-wire{stroke:#ff3a30}
+.rr-item.on .rr-rot{filter:drop-shadow(0 0 5px rgba(255,45,35,.75))}
+.rr-item.on.held .rr-rot{filter:drop-shadow(0 10px 10px rgba(0,0,0,.55))}
+.rr-glow{fill:rgba(255,50,35,.28);transform-origin:24px 14px;animation:rrFlicker 1.7s ease-in-out infinite}
+@keyframes rrFlicker{0%,100%{opacity:.75;scale:1}35%{opacity:1;scale:1.12}60%{opacity:.65;scale:.95}}
+@media (prefers-reduced-motion:reduce){.rr-glow{animation:none}.rr-rot,.rr-item.snap{transition:none}.rr-item.turn .rr-rot{animation:none}}

@@ -1,0 +1,184 @@
+/* rekosk.dev: the hero: logo, intro, greeting and the "Reko" morph */
+/* hero */
+.hero{--px:0;--py:0;position:relative;height:var(--H);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:72px var(--gut) 24px;text-align:center;overflow:hidden;isolation:isolate}
+.hero-bg{position:absolute;inset:0;z-index:-3;background:radial-gradient(rgba(255,255,255,.05) 1px,transparent 1.6px) 0 0/16px 16px,var(--ink)}
+.hero-bg::after{content:"";position:absolute;inset:0;background:radial-gradient(120% 85% at 50% 32%,transparent 42%,rgba(0,0,0,.85) 100%)}
+
+/* logo + intro */
+.logo-slot{position:absolute;z-index:40;left:50%;top:50%;width:var(--S);aspect-ratio:461/452;transform:translate(-50%,-50%)}
+/* once the intro lands, the logo dims and fades to black at the bottom so the text on top stays readable */
+/* --lgf: how strongly the logo fades to black at the bottom (0 = none, 1 = full).
+   Registered so it can animate; JS blends it out while the logo flies into the "R". */
+@property --lgf{syntax:'<number>';inherits:true;initial-value:0}
+.lg-poke{--lgf:0;transition:opacity 1.4s ease,--lgf 1.4s ease;
+  -webkit-mask-image:linear-gradient(to bottom,#000 34%,rgba(0,0,0,calc(1 - var(--lgf) * .75)) 71%,rgba(0,0,0,calc(1 - var(--lgf) * .92)) 100%);
+  mask-image:linear-gradient(to bottom,#000 34%,rgba(0,0,0,calc(1 - var(--lgf) * .75)) 71%,rgba(0,0,0,calc(1 - var(--lgf) * .92)) 100%)}
+.rk.rv .lg-poke{opacity:.42;--lgf:1}
+.rk.rv .logo-btn:hover .lg-poke{opacity:.6;transition-duration:.4s}
+/* while it flies into the "R" spot it does not catch the cursor */
+.logo-slot.to-r{pointer-events:none}
+.logo-slot.to-r .lg-poke{transition:none}
+.logo-slot.to-r .logo-btn{will-change:transform}
+.logo-btn{all:unset;position:absolute;inset:0;display:block;cursor:pointer;border-radius:30px}
+.logo-btn:focus-visible{outline:2px dashed var(--or);outline-offset:14px}
+.lg-move,.lg-poke,.pc,.pc .look,.pc .wink{position:absolute;inset:0;display:block}
+.pc img{display:block;width:100%;height:100%;pointer-events:none;user-select:none;-webkit-user-drag:none}
+.pc{transition:transform .55s cubic-bezier(.34,1.56,.64,1)}
+.pc-1{--fx:31%;--fy:32.5%;--r0:-220deg;transform-origin:19% 17.5%}
+.pc-2{--fx:-13.2%;--fy:22.4%;--r0:170deg;transform-origin:63.2% 27.6%}
+.pc-3{--fx:20.6%;--fy:-25.6%;--r0:200deg;transform-origin:29.4% 75.6%}
+.pc-4{--fx:-30.2%;--fy:-31.9%;--r0:-170deg;transform-origin:80.2% 81.9%}
+.pc-5{--fx:8.2%;--fy:7.4%;--r0:140deg}
+.pc-6{--fx:-6.5%;--fy:8.5%;--r0:-140deg}
+.pc-5,.pc-5 .look,.pc-5 .wink{transform-origin:41.8% 42.6%}
+.pc-6,.pc-6 .look,.pc-6 .wink{transform-origin:56.5% 41.5%}
+.look{transition:transform .3s cubic-bezier(.2,.8,.2,1)}
+.ph-done .look{transform:translate(var(--ex,0%),var(--ey,0%))}
+.ph-done .logo-btn:hover .pc{transform:translate(calc(var(--fx) * -.1),calc(var(--fy) * -.1))}
+.ph-done .logo-btn:active .pc{transform:translate(calc(var(--fx) * -.2),calc(var(--fy) * -.2)) scale(.94);transition-duration:.15s}
+
+.ph-wait .lg-move{transform:translateY(var(--dy)) scale(var(--is))}
+.ph-wait .pc{opacity:0}
+.pk-a .lg-poke{animation:pokeA 1.3s linear}
+.pk-b .lg-poke{animation:pokeB 1.3s linear}
+.pk-a .pc-6 .wink{animation:pwA 1.3s linear}
+.pk-b .pc-6 .wink{animation:pwB 1.3s linear}
+@keyframes pokeA{0%{transform:none;animation-timing-function:cubic-bezier(.6,0,.25,1)}34.6%,58%{transform:rotate(-38deg) scale(1.14);animation-timing-function:cubic-bezier(.5,0,.3,1)}82%{transform:rotate(6deg) scale(.98)}100%{transform:none}}
+@keyframes pokeB{0%{transform:none;animation-timing-function:cubic-bezier(.6,0,.25,1)}34.6%,58%{transform:rotate(-38deg) scale(1.14);animation-timing-function:cubic-bezier(.5,0,.3,1)}82%{transform:rotate(6deg) scale(.98)}100%{transform:none}}
+@keyframes pwA{0%,51.3%{transform:scaleY(1)}53.8%,57.7%{transform:scaleY(.06)}61.5%,100%{transform:scaleY(1)}}
+@keyframes pwB{0%,51.3%{transform:scaleY(1)}53.8%,57.7%{transform:scaleY(.06)}61.5%,100%{transform:scaleY(1)}}
+
+.veil{position:absolute;inset:0;z-index:30;background:#000;opacity:0;visibility:hidden;pointer-events:none}
+.ph-wait .veil{opacity:1;visibility:visible}
+.ph-final .veil{visibility:visible;animation:veilOut 6.4s linear both}
+@keyframes veilOut{0%,81%{opacity:1}95%,100%{opacity:0}}
+.skip{all:unset;box-sizing:border-box;position:absolute;z-index:45;right:var(--gut);bottom:28px;display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 18px;border-radius:999px;font:500 14px/1 'Poppins',sans-serif;color:#9a9a9a;box-shadow:inset 0 0 0 1.5px #2e2e2e;cursor:pointer;transition:color .25s,box-shadow .25s}
+.skip:hover{color:var(--or);box-shadow:inset 0 0 0 1.5px var(--or)}
+.skip:focus-visible{outline:2px dashed var(--or);outline-offset:3px}
+.ph-final .skip,.ph-final .snd-hint{animation:veilOut 6.4s linear both}
+
+/* greeting */
+.hero-copy{position:relative;z-index:50;display:flex;flex-direction:column;align-items:center;pointer-events:none;text-shadow:0 4px 40px rgba(0,0,0,.55)}
+.rk.rv .hero-copy a,.rk.rv .hero-copy button{pointer-events:auto}
+.greet{margin:0;display:flex;flex-direction:column;align-items:center;gap:.04em;font-weight:800;line-height:1.04;letter-spacing:-.03em;color:var(--white)}
+.g-l1{display:flex;align-items:center;justify-content:center;height:1.1em;font-size:clamp(46px,min(7.6vw,11vh),120px)}
+.g-long .g-word,.g-long .g-comma{font-size:.7em}
+.g-word{all:unset;position:relative;isolation:isolate;display:inline-flex;flex-wrap:nowrap;justify-content:center;column-gap:.24em;color:var(--or);cursor:pointer;white-space:nowrap}
+.g-word:focus-visible{outline:2px dashed var(--or);outline-offset:8px;border-radius:8px}
+.g-word::before{content:"";position:absolute;inset:-40% -14%;z-index:-1;background:radial-gradient(rgba(254,119,0,.5) 1.2px,transparent 1.9px) 0 0/9px 9px;-webkit-mask:radial-gradient(closest-side,#000 10%,transparent 100%);mask:radial-gradient(closest-side,#000 10%,transparent 100%);opacity:0;pointer-events:none}
+.g-in::before{animation:puff 1.3s ease-out}
+@keyframes puff{0%{opacity:0;transform:scale(.5)}25%{opacity:.85}100%{opacity:0;transform:scale(1.2)}}
+.g-w{display:inline-flex;white-space:nowrap}
+.g-ch{display:inline-block;transition:transform .4s cubic-bezier(.34,1.56,.64,1),color .2s}
+.g-ch:hover{transform:translateY(-.14em) rotate(-9deg) scale(1.1);color:var(--white)}
+.g-in .g-ch{animation:chIn .65s cubic-bezier(.2,.8,.2,1) backwards}
+.g-out .g-ch{animation:chOut .3s cubic-bezier(.6,0,.8,.4) forwards}
+@keyframes chIn{from{opacity:0;transform:translateY(.5em) rotate(12deg) scale(.4);filter:blur(10px)}}
+@keyframes chOut{to{opacity:0;transform:translateY(-.45em) rotate(-10deg) scale(.7);filter:blur(8px)}}
+.g-comma{color:#6d6a66}
+.g-l2{font-size:clamp(34px,min(7.6vw,11vh),120px);font-weight:800;line-height:1.05;color:#9d9891}
+/* "Reko": hold the cursor on it and the letters smoothly turn into the logo */
+.g-name{position:relative;display:inline-flex;align-items:baseline;color:var(--or);cursor:default;-webkit-user-select:none;user-select:none}
+.rk.rv .g-name{pointer-events:auto}
+/* touch: holding the name must not turn into a scroll / long-press callout (those cancel the hold) */
+.g-name{touch-action:none;-webkit-touch-callout:none}
+.gn-ch{position:relative;display:inline-block;width:var(--tw,auto);transition:width .9s cubic-bezier(.4,0,.2,1)}
+.gn-ch.sw{width:var(--iw)}
+/* sizes/offsets copied from the real wordmark proportions (logo height = .86em) */
+.gn-ch:nth-child(1){--iw:.877em}.gn-ch:nth-child(2){--iw:.437em}.gn-ch:nth-child(3){--iw:.409em}.gn-ch:nth-child(4){--iw:.498em}
+.gn-t{display:inline-block;transition:opacity .8s ease,transform .9s cubic-bezier(.4,0,.2,1);will-change:opacity,transform}
+.gn-i{position:absolute;left:50%;bottom:.17em;width:auto;max-width:none;opacity:0;transform:translateX(-50%) scale(.85);pointer-events:none;transition:opacity .8s ease,transform .9s cubic-bezier(.4,0,.2,1);will-change:opacity,transform}
+.gn-i-r{height:.86em;bottom:.147em;visibility:hidden} /* placeholder: the real big logo flies in here */.gn-i-e{height:.868em;bottom:.157em}.gn-i-k{height:.934em;bottom:.115em}.gn-i-o{height:.607em;bottom:.18em}
+.gn-ch.sw .gn-t{opacity:0;transform:scale(.88)}
+.gn-ch.sw .gn-i{opacity:1;transform:translateX(-50%) scale(1)}
+.g-ul{position:absolute;left:-6%;bottom:-.16em;width:112%;height:.36em;overflow:visible;pointer-events:none}
+.g-ul path{fill:none;stroke:var(--white);stroke-width:6;stroke-linecap:round;stroke-dasharray:1 2;stroke-dashoffset:1.02;transition:stroke-dashoffset 1s cubic-bezier(.65,0,.35,1) .8s}
+.rk.rv .g-ul path{stroke-dashoffset:0}
+/* orange copy of the underline: fills left→right while "Reko" morphs into the logo, retracts right→left after.
+   --ulp (0–1) is set by js/intro.js from the morph itself, so the line always matches the letters and the logo */
+.rk .g-ul path.g-ul-or{stroke:var(--or);stroke-dashoffset:calc(1.02 - 1.02 * var(--ulp,0));transition:none}
+.sub{margin:clamp(16px,3vh,32px) 0 0;max-width:38em;font-size:clamp(16px,1.45vw,21px);line-height:1.6;color:var(--mid)}
+.sub b{color:var(--fog);font-weight:600}
+.ctas{display:flex;flex-wrap:wrap;justify-content:center;gap:14px 28px;margin-top:clamp(22px,4vh,44px)}
+
+/* ===== intro, final run — timeline mirrors Videos/Full.mp4 (6.4s; 1% = 64ms) =====
+   0–0.75s strokes burst in · 0.95–1.45s logo slides left, "eko" glitches in · 2.0s / 2.75s glitches
+   3.6–4.0s letters get sucked into the logo · 4.3–4.75s grow + tilt · ~5.0s wink · 5.15–6.4s settle at the top */
+.rk{--ws:var(--is);--ps:calc(var(--is) * 1.25);--wx:calc(var(--S) * var(--ws) * -.7535)}
+.lg-ltrs{position:absolute;inset:0;display:block;pointer-events:none}
+.ltr{position:absolute;display:block;max-width:none;opacity:0;user-select:none;-webkit-user-drag:none}
+.ltr-e{left:101.08%;top:-1.99%;width:49.89%;height:100.88%;transform-origin:0% 50%}
+.ltr-k{left:149.46%;top:-4.87%;width:46.64%;height:108.63%}
+.ltr-o{left:194.58%;top:25.66%;width:56.83%;height:70.58%}
+.ph-final .lg-move{animation:lgFinal 6.4s linear both}
+.ph-final .pc{animation:pcFinal 6.4s linear both}
+.ph-final .pc-6 .wink{animation:wkFinal 6.4s linear both}
+.ph-final .look{animation:eyeWatch 6.4s linear both}
+.ph-final .lg-poke{animation:swallow 6.4s linear both}
+@keyframes swallow{
+0%,53.13%{transform:scale(1);animation-timing-function:cubic-bezier(.4,0,.2,1)}
+57.03%{transform:scale(1.045);animation-timing-function:ease-in-out}
+60.94%{transform:scale(1.06);animation-timing-function:cubic-bezier(.45,0,.25,1)}
+64.84%,100%{transform:scale(1)}}
+.ph-final .ltr-e{animation:ltrE 6.4s linear both}
+.ph-final .ltr-k{animation:ltrK 6.4s linear both}
+.ph-final .ltr-o{animation:ltrO 6.4s linear both}
+@keyframes lgFinal{
+0%,14.84%{transform:translate(0px,var(--dy)) scale(var(--is)) rotate(0deg);animation-timing-function:cubic-bezier(.6,0,.25,1)}
+22.66%,64.06%{transform:translate(var(--wx),var(--dy)) scale(var(--ws)) rotate(0deg);animation-timing-function:cubic-bezier(.42,0,.2,1)}
+75.78%{transform:translate(0px,var(--dy)) scale(calc(var(--ps) * .965)) rotate(-35deg);animation-timing-function:cubic-bezier(.3,.2,.5,1)}
+80.47%{transform:translate(0px,var(--dy)) scale(var(--ps)) rotate(-38deg);animation-timing-function:cubic-bezier(.6,0,.25,1)}
+95.31%{transform:translate(0px,0px) scale(1) rotate(5deg);animation-timing-function:cubic-bezier(.3,0,.3,1)}
+100%{transform:translate(0px,0px) scale(1) rotate(0deg)}}
+@keyframes pcFinal{
+0%{transform:translate(var(--fx),var(--fy)) rotate(var(--r0)) scale(.05);opacity:0;animation-timing-function:cubic-bezier(.15,.75,.3,1)}
+3%{opacity:1}
+8.6%{transform:translate(calc(var(--fx) * -.14),calc(var(--fy) * -.14)) rotate(calc(var(--r0) * -.05)) scale(1.06);animation-timing-function:cubic-bezier(.4,0,.2,1)}
+11.72%,64.06%{transform:translate(0%,0%) rotate(0deg) scale(1);opacity:1;animation-timing-function:cubic-bezier(.42,0,.2,1)}
+76.56%,80.47%{transform:translate(calc(var(--fx) * -.12),calc(var(--fy) * -.12)) rotate(0deg) scale(1);animation-timing-function:cubic-bezier(.3,0,.2,1)}
+92.19%,100%{transform:translate(0%,0%) rotate(0deg) scale(1);opacity:1}}
+@keyframes wkFinal{0%,76.56%{transform:scaleY(1)}77.34%,78.13%{transform:scaleY(.06)}78.91%,100%{transform:scaleY(1)}}
+@keyframes eyeWatch{
+0%,53.13%{transform:translate(0%,0%);animation-timing-function:cubic-bezier(.4,0,.2,1)}
+56.25%,60.16%{transform:translate(2.2%,.3%);animation-timing-function:cubic-bezier(.45,0,.25,1)}
+64.06%,100%{transform:translate(0%,0%)}}
+@keyframes ltrK{
+0%,17.1%{opacity:0;transform:translateX(18%);filter:drop-shadow(-4px 0 0 rgba(0,230,170,.85)) drop-shadow(4px 0 0 rgba(255,0,120,.75))}
+17.19%{opacity:.45;transform:translateX(10%);filter:drop-shadow(-4px 0 0 rgba(0,230,170,.85)) drop-shadow(4px 0 0 rgba(255,0,120,.75))}
+18.75%{opacity:.75;transform:translateX(-3%);filter:hue-rotate(-50deg) saturate(1.25) drop-shadow(-3px 0 0 rgba(0,230,170,.9)) drop-shadow(3px 0 0 rgba(255,0,120,.75))}
+20.31%{opacity:1;transform:translateX(2%);filter:drop-shadow(-4px 0 0 rgba(0,230,170,.85)) drop-shadow(4px 0 0 rgba(255,0,120,.75))}
+22.66%,31.2%{opacity:1;transform:translateX(0%);filter:drop-shadow(0px 0 0 rgba(0,230,170,0)) drop-shadow(0px 0 0 rgba(255,0,120,0))}
+31.25%,33.2%{opacity:1;transform:translateX(-2%);filter:hue-rotate(-50deg) saturate(1.25) drop-shadow(-3px 0 0 rgba(0,230,170,.9)) drop-shadow(3px 0 0 rgba(255,0,120,.75))}
+33.28%,42.6%{opacity:1;transform:translateX(0%);filter:drop-shadow(0px 0 0 rgba(0,230,170,0)) drop-shadow(0px 0 0 rgba(255,0,120,0))}
+42.66%,43.7%{transform:translateX(2%);filter:hue-rotate(-50deg) saturate(1.25) drop-shadow(-3px 0 0 rgba(0,230,170,.9)) drop-shadow(3px 0 0 rgba(255,0,120,.75))}
+43.75%,45.2%{transform:translateX(-1%);filter:drop-shadow(-4px 0 0 rgba(0,230,170,.85)) drop-shadow(4px 0 0 rgba(255,0,120,.75))}
+45.31%,54.69%{opacity:1;transform:translateX(0%) scale(1);filter:drop-shadow(0px 0 0 rgba(0,230,170,0)) drop-shadow(0px 0 0 rgba(255,0,120,0));animation-timing-function:ease-in-out}
+57.81%{opacity:1;transform:translateX(-4%) scale(.92);filter:blur(0px);animation-timing-function:cubic-bezier(.7,0,.9,.6)}
+59.38%{opacity:.85;transform:translateX(-75%) scale(.62);filter:blur(3px)}
+60.94%,100%{opacity:0;transform:translateX(-150%) scale(.3);filter:blur(5px)}}
+@keyframes ltrO{
+0%,17.6%{opacity:0;transform:translateX(12%);filter:drop-shadow(-4px 0 0 rgba(0,230,170,.85)) drop-shadow(4px 0 0 rgba(255,0,120,.75))}
+17.66%{opacity:.35;transform:translateX(8%);filter:drop-shadow(-4px 0 0 rgba(0,230,170,.85)) drop-shadow(4px 0 0 rgba(255,0,120,.75))}
+19.5%{opacity:.6;transform:translateX(-4%);filter:hue-rotate(-50deg) saturate(1.25) drop-shadow(-3px 0 0 rgba(0,230,170,.9)) drop-shadow(3px 0 0 rgba(255,0,120,.75))}
+21.9%{opacity:1;transform:translateX(1%);filter:drop-shadow(-4px 0 0 rgba(0,230,170,.85)) drop-shadow(4px 0 0 rgba(255,0,120,.75))}
+22.66%,42.6%{opacity:1;transform:translateX(0%);filter:drop-shadow(0px 0 0 rgba(0,230,170,0)) drop-shadow(0px 0 0 rgba(255,0,120,0))}
+42.66%,43.7%{transform:translateX(-2%);filter:hue-rotate(-50deg) saturate(1.25) drop-shadow(-3px 0 0 rgba(0,230,170,.9)) drop-shadow(3px 0 0 rgba(255,0,120,.75))}
+43.75%,45.2%{transform:translateX(1%);filter:drop-shadow(-4px 0 0 rgba(0,230,170,.85)) drop-shadow(4px 0 0 rgba(255,0,120,.75))}
+45.31%,54.69%{opacity:1;transform:translateX(0%) scale(1);filter:drop-shadow(0px 0 0 rgba(0,230,170,0)) drop-shadow(0px 0 0 rgba(255,0,120,0));animation-timing-function:ease-in-out}
+57.81%{opacity:1;transform:translateX(-3%) scale(.95);filter:blur(0px);animation-timing-function:cubic-bezier(.7,0,.9,.6)}
+60.5%{opacity:.75;transform:translateX(-150%) scale(.58);filter:blur(4px)}
+61.72%,100%{opacity:0;transform:translateX(-240%) scale(.35);filter:blur(6px)}}
+@keyframes ltrE{
+0%,18.7%{opacity:0;transform:scaleX(.1);filter:drop-shadow(-4px 0 0 rgba(0,230,170,.85)) drop-shadow(4px 0 0 rgba(255,0,120,.75))}
+18.75%{opacity:.7;transform:scaleX(.25);filter:drop-shadow(-4px 0 0 rgba(0,230,170,.85)) drop-shadow(4px 0 0 rgba(255,0,120,.75))}
+20.31%{opacity:1;transform:scaleX(.8);filter:hue-rotate(-50deg) saturate(1.25) drop-shadow(-3px 0 0 rgba(0,230,170,.9)) drop-shadow(3px 0 0 rgba(255,0,120,.75))}
+21.09%,42.6%{opacity:1;transform:scaleX(1);filter:drop-shadow(0px 0 0 rgba(0,230,170,0)) drop-shadow(0px 0 0 rgba(255,0,120,0))}
+42.66%,43.7%{transform:scaleX(1.03);filter:hue-rotate(-50deg) saturate(1.25) drop-shadow(-3px 0 0 rgba(0,230,170,.9)) drop-shadow(3px 0 0 rgba(255,0,120,.75))}
+43.75%,45.2%{transform:scaleX(1);filter:drop-shadow(-4px 0 0 rgba(0,230,170,.85)) drop-shadow(4px 0 0 rgba(255,0,120,.75))}
+45.31%,54.69%{opacity:1;transform:scale(1,1);filter:drop-shadow(0px 0 0 rgba(0,230,170,0)) drop-shadow(0px 0 0 rgba(255,0,120,0));animation-timing-function:ease-in-out}
+56.25%{opacity:1;transform:scale(.9,.92);filter:blur(0px);animation-timing-function:cubic-bezier(.6,0,.8,.5)}
+58.6%{opacity:.85;transform:scale(.25,.8);filter:blur(1.5px)}
+59.4%,100%{opacity:0;transform:scale(0,.75);filter:blur(1px)}}
+
+.ph-done .skip{display:none}
+.g-word{min-height:1em}

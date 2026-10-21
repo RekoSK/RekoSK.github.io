@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- the map's fish (same shape as the jumping ones) -->
+  <g transform="translate(33 32) rotate(-12) scale(2.82)" stroke="#0b0b0b" stroke-width="0.84" stroke-linejoin="round">
+    <path d="M-7 0L-12.5-4.5L-11.5 0L-12.5 4.5Z" fill="#ff9a3d"/>
+    <path d="M9 0C6-5.5-4-6-8 0C-4 6 6 5.5 9 0Z" fill="#fe7700"/>
+    <path d="M-1-4.6L1-8L4-4.2Z" fill="#ff9a3d"/>
+    <circle cx="4.6" cy="-1" r="1" fill="#0b0b0b" stroke="none"/>
+  </g>
+</svg>

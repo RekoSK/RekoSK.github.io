@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- the bear from the offline map (same shapes and colours), happy after its dinner -->
+  <g transform="translate(32.5 49) scale(.93)">
+    <path fill="#5e3f27" stroke="#0b0b0b" stroke-width="1.6" stroke-linejoin="round" d="M-11.5 -19C-12.5 -11 -12.0 -5 -11.5 -1.2C-9.5 -.4 -6.5 -.4 -4.699999999999999 -1.2C-5.1 -6 -4.5 -12 -2.5 -19Z"/><path fill="#3b2716" stroke="#0b0b0b" stroke-width="1.2" d="M-12.5 0C-13.0 -2.4 -5.0 -2.8 -4.1 0Z"/><path fill="#5e3f27" stroke="#0b0b0b" stroke-width="1.6" stroke-linejoin="round" d="M16.5 -21C15.5 -13 18.0 -6 19.0 -1.2C21.0 -.4 24.0 -.4 25.7 -1.2C25.5 -6 28.5 -12 31.0 -20Z"/><path fill="#3b2716" stroke="#0b0b0b" stroke-width="1.2" d="M18.1 0C17.7 -2.4 25.9 -2.8 26.5 0Z"/>
+    <path fill="#7a5536" stroke="#0b0b0b" stroke-width="1.6" stroke-linejoin="round" d="M-14 -30C-10 -31.5 -6 -32 -2 -35.5C3 -37.5 10 -36 16 -34C22 -32.5 27 -30 29 -25C30.5 -20 29 -14 25 -11C16 -9.5 4 -10 -6 -12C-11 -13 -14 -15 -17 -18C-18 -22 -17 -27 -14 -30Z"/>
+    <path fill="none" stroke="#0b0b0b" stroke-width=".9" stroke-linecap="round" opacity=".45" d="M-5 -27l2-5M-1 -25l2.2-6M9 -29l1.4-4.6M17 -27l1.2-4M24 -21l2.4-4M3 -14l-1-3.4M12 -13l-.6-3.6M-9 -17l-1.6-3.4"/>
+    <path fill="#7a5536" stroke="#0b0b0b" stroke-width="1.6" stroke-linejoin="round" d="M-15 -19C-16 -11 -15.5 -5 -15 -1.2C-13 -.4 -10 -.4 -8.2 -1.2C-8.6 -6 -8 -12 -6 -19Z"/><path fill="#3b2716" stroke="#0b0b0b" stroke-width="1.2" d="M-16 0C-16.5 -2.4 -8.5 -2.8 -7.6 0Z"/><path fill="#7a5536" stroke="#0b0b0b" stroke-width="1.6" stroke-linejoin="round" d="M13 -21C12 -13 14.5 -6 15.5 -1.2C17.5 -.4 20.5 -.4 22.2 -1.2C22 -6 25 -12 27.5 -20Z"/><path fill="#3b2716" stroke="#0b0b0b" stroke-width="1.2" d="M14.6 0C14.2 -2.4 22.4 -2.8 23 0Z"/>
+    <path fill="#fe7700" stroke="#0b0b0b" stroke-width="1.2" stroke-linejoin="round" d="M-12.5 -31.5C-10.8 -26 -11.4 -21 -14.4 -16.6L-10.6 -15.4C-8 -20 -7.6 -26.4 -8.6 -32Z"/>
+    <path fill="#fe7700" stroke="#0b0b0b" stroke-width="1.2" stroke-linejoin="round" d="M-13.6 -16.4L-9.6 -15.6L-12.6 -10.8Z"/>
+    <path fill="#7a5536" d="M-12 -31C-15 -32.5 -18.5 -31 -20.5 -28C-23 -26.5 -27 -25 -29.5 -23.5C-31 -22.5 -31 -20 -29 -19.2C-26 -18 -22 -17.6 -18.5 -18C-15 -18.5 -12.5 -20 -11 -23Z"/>
+    <path fill="none" stroke="#0b0b0b" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round" d="M-12 -31C-15 -32.5 -18.5 -31 -20.5 -28C-23 -26.5 -27 -25 -29.5 -23.5C-31 -22.5 -31 -20 -29 -19.2C-26 -18 -22 -17.6 -18.5 -18C-16 -18.4 -14 -19.2 -12.6 -20.4"/>
+    <path fill="#7a5536" stroke="#0b0b0b" stroke-width="1.6" stroke-linejoin="round" d="M-15 -30.6C-16 -34.5 -11.8 -35.2 -11.4 -31.2"/>
+    <path fill="none" stroke="#0b0b0b" stroke-width=".9" stroke-linecap="round" opacity=".45" d="M-29 -19.6Q-25.5 -18.4 -22.5 -19.3"/>
+    <ellipse fill="#0b0b0b" cx="-29.6" cy="-21.4" rx="1.7" ry="1.3"/>
+    <path fill="none" stroke="#0b0b0b" stroke-width="1.2" stroke-linecap="round" d="M-22.6 -25Q-21 -27.2 -19.4 -25"/>
+  </g>
+</svg>

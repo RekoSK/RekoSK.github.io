@@ -1,0 +1,199 @@
+/* rekosk.dev: achievements: the window, heads, cards, toasts, upgrade sequences / paths and locked ones */
+/* achievements: heads grouped by section, plus a profile-style card for each one */
+.ach-wrap{padding:18px 20px 24px}
+.ach-top{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;margin-bottom:6px;font:500 13px/1.2 'Poppins',sans-serif;color:var(--gray)}
+.ach-top b{color:var(--white);font-weight:800}
+.ach-bar{flex:1 1 80px;height:6px;border-radius:99px;background:#262626;overflow:hidden}
+.ach-bar i{display:block;height:100%;border-radius:inherit;background:var(--or);transition:width .6s cubic-bezier(.2,.8,.2,1)}
+.ach-sec{padding-top:16px}
+.ach-sec-t{display:flex;align-items:baseline;gap:10px;margin:0 0 10px;font:800 17px/1.2 'Poppins',sans-serif;color:var(--white);letter-spacing:-.01em}
+.ach-sec-n{font:600 12px/1 'Montserrat',ui-monospace,monospace;color:var(--gray)}
+.ach-row{display:flex;flex-wrap:wrap;gap:12px}
+.ach-head{--rc:var(--mid);all:unset;box-sizing:border-box;position:relative;width:56px;height:56px;border-radius:50%;background:#1d1d1d;box-shadow:0 0 0 2px #2a2a2a;cursor:pointer;transition:transform .35s cubic-bezier(.34,1.56,.64,1),box-shadow .25s}
+.ach-head img{display:block;width:100%;height:100%;padding:11px;border-radius:50%;object-fit:contain;filter:grayscale(1) brightness(.55);transition:filter .3s}
+.ach-head.got{box-shadow:0 0 0 2.5px var(--rc)}
+.ach-head.got img{filter:none}
+.ach-head:hover,.ach-head.on{transform:translateY(-3px) scale(1.06);box-shadow:0 0 0 2.5px var(--rc)}
+/* hover edge fix: while it's hovered, an invisible copy of the box stays where the box was before it moved, so a
+   cursor on its last pixels keeps the hover instead of rapidly losing and getting it back */
+.ach-head:not(.on):hover::after{content:"";position:absolute;inset:-2px;border-radius:50%;z-index:-1;transform:scale(.9434) translateY(3px)}
+.ach-head:hover img,.ach-head.on img{filter:grayscale(.3) brightness(.85)}
+.ach-head.got:hover img,.ach-head.got.on img{filter:none}
+.ach-head:focus-visible{outline:2px dashed var(--or);outline-offset:4px}
+.r-rare{--rc:#4ccf72}
+.r-superrare{--rc:#5aa9ff}
+.r-epic{--rc:#b46bff}
+.r-legendary{--rc:var(--or)}
+.ach-head.r-legendary.got{box-shadow:0 0 0 2.5px var(--rc),0 0 18px rgba(254,119,0,.45)}
+.ach-head.r-epic.got{box-shadow:0 0 0 2.5px var(--rc),0 0 14px rgba(180,107,255,.35)}
+/* status dot, like an online/offline badge */
+.ach-dot{position:absolute;right:-1px;bottom:-1px;width:16px;height:16px;border-radius:50%;background:#1d1d1d;box-shadow:0 0 0 3px #121212;display:grid;place-items:center}
+.ach-dot::after{content:"";width:6px;height:6px;border-radius:50%;box-shadow:inset 0 0 0 2px #6b6b6b}
+.got>.ach-dot{background:var(--rc)}
+.got>.ach-dot::after{width:7px;height:4px;border-radius:0;box-shadow:none;border:solid #0b0b0b;border-width:0 0 2px 2px;transform:translateY(-1px) rotate(-45deg)}
+
+.ach-card{--rc:var(--mid);position:fixed;z-index:96;left:0;top:0;width:300px;max-width:calc(100vw - 24px);border-radius:12px;background:#1a1a1a;box-shadow:0 0 0 1px #2c2c2c,0 24px 50px rgba(0,0,0,.6);overflow:hidden;font-family:'Poppins',sans-serif;animation:achIn .3s cubic-bezier(.34,1.56,.64,1)}
+.ach-card[hidden]{display:none}
+@keyframes achIn{from{opacity:0;scale:.92}}
+.ach-banner{height:84px;background:linear-gradient(135deg,#2a2a2a,#3a3a3a)}
+.ach-card.r-rare .ach-banner{background:linear-gradient(135deg,#0f3d22,#2f9a52)}
+.ach-card.r-superrare .ach-banner{background:linear-gradient(135deg,#123257,#2f6fb8)}
+.ach-card.r-epic .ach-banner{background:radial-gradient(circle at 80% 30%,rgba(255,255,255,.18),transparent 45%),linear-gradient(135deg,#2e0f55,#7b35d4 70%,#b46bff)}
+.ach-card.r-legendary .ach-banner{background:repeating-linear-gradient(-45deg,rgba(0,0,0,.14) 0 12px,transparent 12px 24px),linear-gradient(135deg,#a84300,var(--or) 60%,#ffb36b)}
+.ach-card:not(.got) .ach-banner{filter:saturate(.35) brightness(.7)}
+.ach-av{position:absolute;left:16px;top:36px;width:88px;height:88px;border-radius:50%;background:#232323;box-shadow:0 0 0 6px #1a1a1a}
+.ach-av img{display:block;width:100%;height:100%;padding:17px;object-fit:contain;filter:grayscale(1) brightness(.6)}
+.ach-card.got .ach-av img{filter:none}
+.ach-av .ach-dot{right:2px;bottom:2px;width:22px;height:22px;box-shadow:0 0 0 5px #1a1a1a}
+.ach-av .ach-dot::after{width:9px;height:9px;box-shadow:inset 0 0 0 3px #6b6b6b}
+.ach-card.got .ach-av .ach-dot{background:var(--rc)}
+.ach-card.got .ach-av .ach-dot::after{width:9px;height:5px;border-radius:0;box-shadow:none;border:solid #0b0b0b;border-width:0 0 2.5px 2.5px;transform:translateY(-1px) rotate(-45deg)}
+.ach-body{padding:50px 16px 16px}
+.ach-name{margin:0;font:800 20px/1.2 'Poppins',sans-serif;color:var(--white);letter-spacing:-.01em}
+.ach-rar{display:block;margin-top:2px;font:600 13px/1.4 'Poppins',sans-serif;color:var(--rc)}
+.ach-card.r-legendary .ach-rar{background:linear-gradient(90deg,var(--or),#ffd29a,var(--or)) 0 0/200% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:achShine 2.4s linear infinite}
+@keyframes achShine{to{background-position:-200% 0}}
+.ach-hint-btn{all:unset;box-sizing:border-box;display:inline-flex;align-items:center;gap:8px;min-height:38px;margin-top:14px;padding:0 14px 0 10px;border-radius:8px;background:#262626;color:var(--fog);font:600 14px/1 'Poppins',sans-serif;cursor:pointer;transition:background .2s,color .2s}
+.ach-hint-btn:hover{background:#303030;color:#fff}
+.ach-hint-btn:focus-visible{outline:2px dashed var(--or);outline-offset:3px}
+.ach-hint-btn:disabled{cursor:default}
+.ach-hint-btn .ico{width:19px;height:19px;transition:color .3s,filter .3s}
+.ach-ray{opacity:0;transition:opacity .3s}
+.ach-card.lit .ach-hint-btn{color:var(--white)}
+.ach-card.lit .ach-hint-btn .ico{color:#ffd23f;filter:drop-shadow(0 0 6px rgba(255,210,63,.7))}
+.ach-card.lit .ach-ray{opacity:1}
+.ach-hint{margin:10px 0 0;padding:10px 12px;border-radius:8px;background:#121212;box-shadow:inset 0 0 0 1px #2c2c2c;font:600 13px/1.5 'Montserrat',ui-monospace,monospace;color:var(--mid)}
+.ach-hint[hidden]{display:none}
+.ach-hint.typing .ach-hint-t::after{content:"▍";margin-left:1px;color:var(--or);animation:achCaret .6s steps(1) infinite}
+@keyframes achCaret{50%{opacity:0}}
+.ach-done{display:flex;align-items:center;gap:6px;margin:14px 0 0;padding-top:12px;border-top:1px solid #2c2c2c;font:600 13px/1.3 'Poppins',sans-serif;color:var(--fog)}
+.ach-done .ico{width:16px;height:16px;color:var(--rc);stroke-width:3}
+@media (prefers-reduced-motion:reduce){.ach-card,.ach-card.r-legendary .ach-rar{animation:none}}
+.ach-none{margin:0;font:500 13px/1.4 'Poppins',sans-serif;color:#5f5f5f;font-style:italic}
+.ach-after{margin:14px 0 0;padding:10px 12px;border-radius:8px;border-left:3px solid var(--rc);background:#121212;font:600 14px/1.45 'Poppins',sans-serif;font-style:italic;color:var(--fog)}
+.ach-toasts{position:fixed;z-index:97;top:84px;right:var(--gut);display:flex;flex-direction:column;align-items:flex-end;gap:10px;width:min(340px,calc(100vw - 32px));pointer-events:none}
+.ach-toast{--rc:var(--mid);all:unset;box-sizing:border-box;position:relative;display:flex;align-items:center;gap:14px;width:100%;padding:14px 40px 16px 14px;border-radius:12px;background:#1a1a1a;box-shadow:0 0 0 1px #2c2c2c,inset 3px 0 0 var(--rc),0 18px 40px rgba(0,0,0,.55);overflow:hidden;cursor:pointer;pointer-events:auto;font-family:'Poppins',sans-serif;animation:achToastIn .5s cubic-bezier(.34,1.56,.64,1)}
+.ach-toast.r-rare{--rc:#4ccf72}
+.ach-toast.r-superrare{--rc:#5aa9ff}
+.ach-toast.r-epic{--rc:#b46bff}
+.ach-toast.r-legendary{--rc:var(--or)}
+.ach-toast:hover{background:#202020}
+.ach-toast:focus-visible{outline:2px dashed var(--or);outline-offset:3px}
+.ach-toast.out{animation:achToastOut .3s ease-in forwards}
+@keyframes achToastIn{from{opacity:0;translate:calc(100% + 40px) 0}}
+@keyframes achToastOut{to{opacity:0;translate:60px 0}}
+.ach-t-av{position:relative;flex:none;width:52px;height:52px;border-radius:50%;background:#232323;box-shadow:0 0 0 2.5px var(--rc)}
+.ach-t-av img{display:block;width:100%;height:100%;padding:10px;object-fit:contain;animation:achPop .6s cubic-bezier(.34,1.56,.64,1) .2s both}
+@keyframes achPop{from{scale:.3;rotate:-30deg}}
+.ach-t-av .ach-dot{background:var(--rc);box-shadow:0 0 0 3px #1a1a1a}
+.ach-t-av .ach-dot::after{width:7px;height:4px;border-radius:0;box-shadow:none;border:solid #0b0b0b;border-width:0 0 2px 2px;transform:translateY(-1px) rotate(-45deg)}
+.ach-t-txt{display:flex;flex-direction:column;min-width:0}
+.ach-t-k{font:600 11px/1.3 'Montserrat',ui-monospace,monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--rc)}
+.ach-t-n{margin-top:2px;font:800 16px/1.25 'Poppins',sans-serif;color:var(--white)}
+.ach-t-d{margin-top:3px;font:500 13px/1.4 'Poppins',sans-serif;font-style:italic;color:var(--mid)}
+.ach-t-time{position:absolute;left:0;right:0;bottom:0;height:3px;background:var(--rc);transform-origin:center;animation:achTime 6s linear forwards}
+.ach-toast:hover .ach-t-time{animation-play-state:paused}
+@keyframes achTime{to{transform:scaleX(0)}}
+@media (max-width:600px){.ach-toasts{right:16px}}
+@media (prefers-reduced-motion:reduce){.ach-toast,.ach-t-av img,.ach-t-time{animation:none}}
+.ach-reset{all:unset;box-sizing:border-box;display:inline-flex;align-items:center;gap:7px;min-height:32px;padding:0 12px 0 10px;border-radius:8px;background:#1f1f1f;box-shadow:inset 0 0 0 1px #2e2e2e;color:var(--mid);font:600 12px/1 'Poppins',sans-serif;white-space:nowrap;cursor:pointer;transition:background .2s,color .2s,box-shadow .2s}
+.ach-reset .ico{width:15px;height:15px}
+.ach-reset:hover{color:var(--white);box-shadow:inset 0 0 0 1px #4a4a4a}
+.ach-reset:focus-visible{outline:2px dashed var(--or);outline-offset:3px}
+.ach-reset:disabled{opacity:.4;cursor:default;box-shadow:inset 0 0 0 1px #2e2e2e;color:var(--mid)}
+.ach-reset.warn{background:#c62828;color:#fff;box-shadow:none;animation:achNudge .3s}
+.ach-reset.warn:hover{background:#d93434}
+.ach-reset.panic{background:#ff1f1f;font-weight:800;letter-spacing:.03em;box-shadow:0 0 0 3px rgba(255,31,31,.25),0 0 18px rgba(255,31,31,.5);animation:achShake .4s}
+@keyframes achNudge{40%{scale:1.06}}
+@keyframes achShake{20%{translate:-4px 0}40%{translate:4px 0}60%{translate:-3px 0}80%{translate:2px 0}}
+@media (prefers-reduced-motion:reduce){.ach-reset.warn,.ach-reset.panic{animation:none}}
+.ach-t-x{all:unset;box-sizing:border-box;position:absolute;top:6px;right:6px;display:grid;place-items:center;width:28px;height:28px;border-radius:7px;color:var(--gray);cursor:pointer;transition:background .2s,color .2s}
+.ach-t-x:hover{background:#2c2c2c;color:var(--white)}
+.ach-t-x:focus-visible{outline:2px dashed var(--or);outline-offset:2px}
+.ach-t-x svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2.6;stroke-linecap:round}
+.ach-card.r-rare{--rc:#4ccf72}.ach-card.r-superrare{--rc:#5aa9ff}.ach-card.r-epic{--rc:#b46bff}.ach-card.r-legendary{--rc:var(--or)}
+
+/* upgrade sequences: one head for several achievements in a row */
+.ach-chain.prog::after{content:"";position:absolute;inset:-3px;border-radius:50%;background:conic-gradient(var(--rc) calc(var(--p) * 360deg),transparent 0);-webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 3px),#000 calc(100% - 2.5px));mask:radial-gradient(farthest-side,transparent calc(100% - 3px),#000 calc(100% - 2.5px));filter:drop-shadow(0 0 4px var(--rc));pointer-events:none}
+.ach-chain.prog:hover,.ach-chain.prog.on{box-shadow:0 0 0 2px #2a2a2a}
+.ach-dot.num{z-index:1;background:var(--rc);color:#0b0b0b;font:600 10px/1 'Montserrat',ui-monospace,monospace}
+.ach-dot.num::after{display:none}
+.ach-card-chain .ach-banner{height:46px}
+.ach-card-chain .ach-body{padding-top:14px}
+.ach-ch-k{display:block;margin-bottom:2px;font:600 11px/1.3 'Montserrat',ui-monospace,monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--rc)}
+.ach-steps{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:14px}
+.ach-step{--rc:var(--mid);all:unset;box-sizing:border-box;position:relative;flex:none;width:44px;height:44px;border-radius:50%;background:#232323;box-shadow:0 0 0 2px #2e2e2e;cursor:pointer;transition:transform .35s cubic-bezier(.34,1.56,.64,1),box-shadow .35s ease}
+.ach-step.r-rare{--rc:#4ccf72}.ach-step.r-superrare{--rc:#5aa9ff}.ach-step.r-epic{--rc:#b46bff}.ach-step.r-legendary{--rc:var(--or)}
+.ach-step img{display:block;width:100%;height:100%;padding:8px;object-fit:contain;filter:grayscale(1) brightness(.55);transition:filter .35s}
+.ach-step.got{box-shadow:0 0 0 2.5px var(--rc)}
+.ach-step.got img{filter:none}
+.ach-step:not(.locked):hover{transform:translateY(-2px) scale(1.07);box-shadow:0 0 0 2.5px var(--rc)}
+/* hover edge fix (see .ach-head:not(.on):hover::after) */
+.ach-step:not(.locked):not(.sel):hover::after{content:"";position:absolute;inset:-2px;border-radius:50%;z-index:-1;transform:scale(.9346) translateY(2px)}
+.ach-step:focus-visible{outline:2px dashed var(--or);outline-offset:3px}
+.ach-step.locked{cursor:not-allowed;background:#1c1c1c;box-shadow:0 0 0 2px #262626}
+/* a locked step (when: 'id') that can be reached: the same dark lock as a locked head, but it can be picked */
+.ach-step.sealed{background:#121212;box-shadow:0 0 0 2px #1f1f1f}
+.ach-step.sealed .ach-lock{padding:11px;stroke:#4a4a4a}
+.ach-step.sealed .ach-lock .lk-body{fill:#1e1e1e}
+.ach-step.sealed:hover,.ach-step.sealed.sel{box-shadow:0 0 0 2.5px #3a3a3a}
+.ach-step.sealed:hover .ach-lock,.ach-step.sealed.sel .ach-lock{stroke:#6b6b6b}
+.ach-lock{display:block;width:100%;height:100%;padding:12px;fill:none;stroke:#6b6b6b;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.ach-lock .lk-body{fill:#2c2c2c}
+.ach-arr{flex:none;width:14px;height:14px;fill:none;stroke:#5f5f5f;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.ach-card-chain .ach-steps{margin-top:14px;gap:6px;flex-wrap:nowrap}
+.ach-step.sel{transform:scale(1.2);box-shadow:0 0 0 2.5px var(--rc)}
+/* upgrade paths: the steps as a tree (positions set in js/achievements.js), the arrows drawn underneath */
+.ach-card-chain .ach-steps.ach-tree{display:block;position:relative;flex:none;margin:6px 0 0 -8px}
+.ach-tree .ach-step{position:absolute}
+.ach-tree-ln{position:absolute;inset:0;overflow:visible;pointer-events:none}
+.ach-tree-ln path{fill:none;stroke:#5f5f5f;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.ach-tree-ln path.on{stroke:#9a9a9a}
+.ach-step.sel img{filter:none}
+.ach-step.sel:not(.got) img{filter:grayscale(.6) brightness(.85)}
+.ach-step.sel:hover{transform:scale(1.2)}
+.ach-texts{display:flex;flex-direction:column;gap:6px;margin-top:14px}
+.ach-texts .ach-after{margin:0;font-size:13px;opacity:.45;transition:opacity .4s ease,background .4s ease,box-shadow .4s ease}
+.ach-texts .r-common{--rc:var(--mid)}
+.ach-texts .ach-after.sel{opacity:1;background:#202020;box-shadow:inset 0 0 0 1px #2e2e2e}
+.ach-card-chain .ach-hint-btn{margin-top:14px}
+/* switching the picked step: name, rarity, banner and the bottom line ease in; colours ease over */
+.ach-card .ach-rar,.ach-card .ach-ch-k{transition:color .35s}
+.ach-banner.fade-in{animation:achBannerIn .45s ease-out}
+@keyframes achBannerIn{from{opacity:.35}}
+/* the Hint button wears the colour of the achievement it's for */
+.ach-hint-btn{box-shadow:inset 0 0 0 1.5px var(--rc);transition:background .2s,color .2s,box-shadow .35s}
+.ach-hint-btn:hover{box-shadow:inset 0 0 0 1.5px var(--rc),0 0 10px -2px var(--rc)}
+/* a locked step that gets clicked: flashes red, shakes */
+.ach-step.deny{animation:achDenyShake .42s cubic-bezier(.36,.07,.19,.97),achDenyRed .9s ease-out}
+.ach-step.deny .ach-lock{animation:achDenyLock .9s ease-out}
+@keyframes achDenyShake{15%{translate:-4px 0}30%{translate:4px 0}45%{translate:-3px 0}60%{translate:3px 0}75%{translate:-1px 0}}
+@keyframes achDenyRed{0%,45%{background:#3a1414;box-shadow:0 0 0 2px #e5262f,0 0 12px rgba(229,38,47,.45)}}
+@keyframes achDenyLock{0%,45%{stroke:#ff5a5f}}
+@media (prefers-reduced-motion:reduce){.ach-banner.fade-in{animation:none}.ach-step.deny{animation:achDenyRed .9s ease-out}}
+
+/* windows stack above each other (z-index 95+), the achievement card and toasts stay above them all */
+.ach-card{z-index:960}.ach-toasts{z-index:970}
+
+/* locked achievements (when: 'id'): the lock instead of the picture, darker than a common one, "Locked" as the rarity */
+.ach-head.ach-sealed{background:#121212;box-shadow:0 0 0 2px #1f1f1f}
+.ach-head.ach-sealed .ach-lock{padding:15px;stroke:#4a4a4a}
+.ach-head.ach-sealed .ach-lock .lk-body{fill:#1e1e1e}
+.ach-head.ach-sealed:hover,.ach-head.ach-sealed.on{box-shadow:0 0 0 2.5px #3a3a3a}
+.ach-head.ach-sealed:hover .ach-lock,.ach-head.ach-sealed.on .ach-lock{stroke:#6b6b6b}
+.ach-sealed>.ach-dot{background:#141414}
+.ach-sealed>.ach-dot::after{box-shadow:inset 0 0 0 2px #3f3f3f}
+.ach-card-sealed{--rc:#5f5f5f}
+.ach-card-sealed .ach-banner{background:repeating-linear-gradient(-45deg,rgba(255,255,255,.025) 0 10px,transparent 10px 20px),linear-gradient(135deg,#141414,#202020)}
+.ach-card-sealed .ach-av{background:#121212}
+.ach-card-sealed .ach-av .ach-lock{padding:24px;stroke:#5a5a5a}
+.ach-card-sealed .ach-av .ach-lock .lk-body{fill:#1e1e1e}
+.ach-card-sealed .ach-av .ach-dot{background:#141414}
+.ach-card-sealed .ach-av .ach-dot::after{box-shadow:inset 0 0 0 3px #3f3f3f}
+.ach-card-sealed .ach-rar{color:#6b6b6b;letter-spacing:.02em}
+/* a locked step picked in a sequence / path card: grey like a locked card, whatever the step's rarity */
+.ach-card.ach-card-sealed{--rc:#5f5f5f}
+.ach-card.ach-card-sealed .ach-banner{background:repeating-linear-gradient(-45deg,rgba(255,255,255,.025) 0 10px,transparent 10px 20px),linear-gradient(135deg,#141414,#202020)}
+.ach-card.ach-card-sealed .ach-rar{background:none;color:#6b6b6b;animation:none}
+.ach-when{display:flex;align-items:flex-start;gap:8px;margin:14px 0 0;padding:10px 12px;border-radius:8px;border-left:3px solid #3a3a3a;background:#121212;font:600 14px/1.45 'Poppins',sans-serif;color:var(--gray)}
+.ach-when .ach-lock{flex:none;width:16px;height:16px;margin-top:2px;padding:0;stroke:#6b6b6b}

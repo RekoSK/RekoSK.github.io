@@ -1,0 +1,77 @@
+/* rekosk.dev: the Linux box's terminal, its shutdown / reboot and the rm -rf sticker's output */
+/* little terminal for the open Linux box (translucent, like Reko's hyprarch kitty): outside the box in the empty
+   right column on wide screens (vertically centred on the box), under the distro logos when the About section is one column */
+.now-linux{position:relative}
+.term{display:none}
+.now-linux.open .term{display:block;width:min(100%,280px);aspect-ratio:16 / 10;margin-top:6px;padding:12px 14px;border:2px solid var(--or);border-radius:12px;background:rgba(58,38,34,.55);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);box-shadow:0 10px 30px rgba(0,0,0,.35);overflow-y:auto;scrollbar-width:none;cursor:text;animation:favPop .45s cubic-bezier(.34,1.56,.64,1)}
+@media (min-width:901px){.now-linux.open .term{position:absolute;z-index:3;left:calc(100% + clamp(32px,5vw,72px));top:50%;translate:0 -50%;width:min(100%,340px);margin:0}}
+.term-line{display:flex;align-items:center;gap:8px}
+.term-pill{display:flex;align-items:center;height:20px}
+.term-os{display:grid;place-items:center;height:20px;padding:0 10px 0 9px;border-radius:999px 0 0 999px;background:var(--or);clip-path:polygon(0 0,calc(100% - 6px) 0,100% 50%,calc(100% - 6px) 100%,0 100%)}
+.term-os svg{width:13px;height:13px;fill:#0b0b0b}
+.term-dir{display:grid;place-items:center;height:20px;margin-left:-4px;padding:0 14px 0 12px;background:var(--or2);color:#0b0b0b;font:700 11px/1 'JetBrains Mono',monospace;clip-path:polygon(0 0,calc(100% - 6px) 0,100% 50%,calc(100% - 6px) 100%,0 100%,6px 50%)}
+.term-arr{color:var(--or);font:700 12px/1 'JetBrains Mono',monospace}
+.term-in{flex:1;min-width:0;height:20px;padding:0;border:0;outline:0;background:none;color:var(--fog);caret-color:var(--fog);font:500 12px/20px 'JetBrains Mono',monospace;letter-spacing:0}
+.term::-webkit-scrollbar{display:none}
+.term-line + .term-line,.ff + .term-line{margin-top:6px}
+.term-cmd{color:var(--fog);font:500 12px/20px 'JetBrains Mono',monospace;white-space:pre}
+.term-cmd.ok{color:#3dff7a}
+/* sudo: the word turns red, shakes, gets crossed out left to right, then fades away (js/logo-boxes.js) */
+.term-sudo{flex:1;min-width:0;color:var(--fog);font:500 12px/20px 'JetBrains Mono',monospace;white-space:pre}
+.term-sudo b{position:relative;display:inline-block;font-weight:500;color:#ff4d4d;animation:achDenyShake .38s}
+.term-sudo b::after{content:"";position:absolute;left:-2px;right:-2px;top:50%;height:2px;margin-top:-1px;border-radius:2px;background:#ff4d4d;transform:scaleX(0);transform-origin:left;transition:transform .35s ease-out}
+.term-sudo b.cross::after{transform:scaleX(1)}
+.term-sudo b.gone{opacity:0;filter:blur(2px);translate:0 -3px;transition:opacity .3s,filter .3s,translate .3s}
+.term-cmd.bad{background:#e8505b;color:#fff}
+/* unknown command: bash + ble.sh error lines, and a red ✗ / arrow on the prompt after a failed command */
+.term-x{display:none;color:#ff4d4d;font:700 12px/1 'JetBrains Mono',monospace}
+.term-line.err .term-x{display:inline}
+.term-line.err .term-arr{color:#ff4d4d}
+.term-err{display:flex;flex-direction:column;color:var(--fog);font:500 12px/18px 'JetBrains Mono',monospace;white-space:pre-wrap;word-break:break-all}
+.term-exit{color:#ff4d4d}
+.term-err + .term-line{margin-top:10px}
+/* fastfetch output: small Arch logo on the left, info on the right */
+.ff{display:flex;gap:10px;margin-top:4px;font:500 7.5px/1.35 'JetBrains Mono',monospace;color:var(--fog);white-space:pre}
+.ff-logo{color:#1793d1;font-weight:700}
+.ff-info{display:flex;flex-direction:column;min-width:0}
+.ff-row{display:block;overflow:hidden;text-overflow:ellipsis}
+.ff-row b{color:#3fc1d9;font-weight:700}
+.ff-cols{display:grid;grid-template-columns:repeat(8,9px);grid-auto-rows:6px;margin-top:5px}
+.ff-cols i:nth-child(1){background:#000}.ff-cols i:nth-child(2){background:#cd0000}.ff-cols i:nth-child(3){background:#00cd00}.ff-cols i:nth-child(4){background:#cdcd00}
+.ff-cols i:nth-child(5){background:#0072cd}.ff-cols i:nth-child(6){background:#cd00cd}.ff-cols i:nth-child(7){background:#00cdcd}.ff-cols i:nth-child(8){background:#e5e5e5}
+.ff-cols i:nth-child(9){background:#7f7f7f}.ff-cols i:nth-child(10){background:#ff2a2a}.ff-cols i:nth-child(11){background:#00ff00}.ff-cols i:nth-child(12){background:#ffff00}
+.ff-cols i:nth-child(13){background:#1e90ff}.ff-cols i:nth-child(14){background:#ff00ff}.ff-cols i:nth-child(15){background:#00ffff}.ff-cols i:nth-child(16){background:#fff}
+.term-caret::after{content:"▍";margin-left:1px;color:var(--or);animation:achCaret .6s steps(1) infinite}
+/* the rm -rf sticker types its command into the prompt: the caret there sits right after the text, at the terminal's size */
+.term-line>.term-caret{margin-left:-8px;font:500 12px/20px 'JetBrains Mono',monospace}
+
+/* terminal shutdown / reboot (js/logo-boxes.js powerOff): the whole site switches off like the birdhouse's old TV (no glitches):
+   a window in a black frame squashes to a bright line, then a dot, and goes dark for good (only a refresh brings it
+   back); reboot warms it up again (dot, line, flash), a console caret blinks and the page reloads */
+html.pwr-lock,html.pwr-lock body{overflow:hidden;overscroll-behavior:none}
+.pwr{position:fixed;inset:0;z-index:2147483000;overflow:hidden;cursor:none;background:#000}
+.pwr.off{background:none}
+.pwr-scr{position:absolute;left:50%;top:50%;width:0;height:0;translate:-50% -50%;box-shadow:0 0 0 100vmax #000}
+.pwr.off .pwr-scr{animation:pwr-off .45s forwards}
+.pwr.on .pwr-scr{animation:pwr-on .65s forwards}
+@keyframes pwr-off{
+  0%{width:100vw;height:100vh;background:rgba(255,255,255,0);box-shadow:0 0 0 0 rgba(255,255,255,0),0 0 0 100vmax #000;-webkit-backdrop-filter:brightness(1.2);backdrop-filter:brightness(1.2);animation-timing-function:cubic-bezier(.6,0,.9,.4)}
+  45%{width:100vw;height:3px;background:rgba(255,255,255,.9);box-shadow:0 0 14px 3px rgba(255,255,255,.7),0 0 0 100vmax #000;-webkit-backdrop-filter:brightness(6) saturate(0);backdrop-filter:brightness(6) saturate(0);animation-timing-function:cubic-bezier(.5,0,.9,.5)}
+  78%{width:5px;height:3px;background:#fff;box-shadow:0 0 10px 3px rgba(255,255,255,.8),0 0 0 100vmax #000}
+  84%{width:5px;height:3px;background:#fff;box-shadow:0 0 10px 3px rgba(255,255,255,.8),0 0 0 100vmax #000}
+  100%{width:0;height:0;background:rgba(255,255,255,0);box-shadow:0 0 0 0 rgba(255,255,255,0),0 0 0 100vmax #000}
+}
+@keyframes pwr-on{
+  0%{width:0;height:0;background:#fff;box-shadow:0 0 0 0 rgba(255,255,255,0),0 0 0 100vmax #000}
+  14%{width:5px;height:3px;background:#fff;box-shadow:0 0 10px 3px rgba(255,255,255,.8),0 0 0 100vmax #000;animation-timing-function:cubic-bezier(.2,.6,.4,1)}
+  36%{width:100vw;height:3px;background:rgba(255,255,255,.9);box-shadow:0 0 14px 3px rgba(255,255,255,.7),0 0 0 100vmax #000;animation-timing-function:cubic-bezier(.2,.7,.3,1)}
+  58%{width:100vw;height:100vh;background:rgba(255,255,255,.28);box-shadow:0 0 0 0 rgba(255,255,255,0),0 0 0 100vmax #000}
+  100%{width:100vw;height:100vh;background:rgba(255,255,255,0);box-shadow:0 0 0 0 rgba(255,255,255,0),0 0 0 100vmax #000}
+}
+.pwr-caret{position:absolute;left:18px;top:16px;width:10px;height:18px;background:#fe7700;animation:pwr-blink .9s steps(1,end) infinite}
+@keyframes pwr-blink{50%{opacity:0}}
+
+/* "sudo rm -rf / --no-preserve-root" sticker dropped in the terminal (js/logo-boxes.js reko:rmrf): deleted files stream by forever */
+.term-rm{display:flex;flex-direction:column;margin-top:6px;font:500 10.5px/15px 'JetBrains Mono',monospace;color:#8f8f8f;white-space:pre-wrap;word-break:break-all}
+.term-rm .d{color:var(--fog)}
+.term-rm .e{color:#ff4d4d}

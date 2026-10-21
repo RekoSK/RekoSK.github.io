@@ -1,0 +1,97 @@
+/* rekosk.dev: the secret birdhouse, its loot, the map's compass needle and nail, and the geocache */
+/* secret birdhouse photo (js/photo-windows.js wireUnlock): the finale glitches the picture (1.2s), switches it off like an old TV
+   (squashed to a bright line, then a dot), keeps it dark while the photo is swapped, and switches it back on */
+.photo-view.bh-final img{animation:bh-glitch 1.2s steps(1,end) both,bh-tv 1.4s linear 1.2s forwards}
+.photo-view.bh-final::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;mix-blend-mode:screen;background:linear-gradient(0deg,transparent 0 18%,rgba(0,220,255,.55) 18% 21%,transparent 21% 47%,rgba(255,0,60,.5) 47% 49%,transparent 49% 71%,rgba(254,119,0,.6) 71% 75%,transparent 75%);animation:bh-bars 1.2s steps(1,end) both}
+.photo-view.bh-final::after{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;background:repeating-linear-gradient(0deg,transparent 0 2px,rgba(254,119,0,.35) 2px 3px,transparent 3px 5px,rgba(0,0,0,.35) 5px 6px);animation:bh-scan 1.2s steps(1,end) both}
+@keyframes bh-glitch{
+  0%{transform:scale(1.03);filter:none;clip-path:inset(0)}
+  4%{transform:scale(1.1) translate(-18px,4px) skewX(10deg);filter:hue-rotate(90deg) saturate(3) drop-shadow(10px 0 0 rgba(255,0,60,.85)) drop-shadow(-10px 0 0 rgba(0,220,255,.85));clip-path:inset(10% 0 55% 0)}
+  8%{transform:scale(1.04) translate(16px,-6px);filter:invert(1) contrast(1.8);clip-path:inset(40% 0 15% 0)}
+  12%{transform:scale(1.14) translate(-8px,0) skewX(-14deg);filter:drop-shadow(14px 0 0 rgba(255,0,60,.9)) drop-shadow(-14px 0 0 rgba(0,220,255,.9));clip-path:inset(0 0 72% 0)}
+  16%{transform:scale(1.03) translate(22px,2px);filter:grayscale(1) contrast(3);clip-path:inset(62% 0 4% 0)}
+  20%{transform:scale(1.08) translate(-22px,-5px) skewY(4deg);filter:hue-rotate(-140deg) saturate(4);clip-path:inset(25% 0 38% 0)}
+  24%{transform:scale(1.03);filter:brightness(3) contrast(2);clip-path:inset(0)}
+  28%{transform:scale(1.16) translate(10px,8px) skewX(18deg);filter:invert(1) hue-rotate(180deg);clip-path:inset(4% 0 78% 0)}
+  32%{transform:scale(1.05) translate(-14px,0);filter:drop-shadow(18px 0 0 rgba(255,0,60,.9)) drop-shadow(-18px 0 0 rgba(0,220,255,.9)) contrast(1.6);clip-path:inset(45% 0 28% 0)}
+  36%{transform:scale(1.03) translate(24px,-3px);filter:saturate(5) hue-rotate(60deg);clip-path:inset(0 0 50% 0)}
+  40%{transform:scale(1.12) translate(-20px,6px) skewX(-8deg);filter:invert(1) contrast(2.4);clip-path:inset(70% 0 0 0)}
+  44%{transform:scale(1.03);filter:brightness(3.5);clip-path:inset(0)}
+  48%{transform:scale(1.18) translate(6px,-10px) skewX(22deg);filter:drop-shadow(22px 0 0 rgba(255,0,60,.95)) drop-shadow(-22px 0 0 rgba(0,220,255,.95)) grayscale(1);clip-path:inset(20% 0 60% 0)}
+  50%,57%{transform:scale(1.03);filter:brightness(0);clip-path:inset(0)}
+  58%{transform:scale(1.12) translate(-16px,4px) skewX(-16deg);filter:hue-rotate(120deg) saturate(3) drop-shadow(12px 0 0 rgba(255,0,60,.85)) drop-shadow(-12px 0 0 rgba(0,220,255,.85));clip-path:inset(30% 0 40% 0)}
+  62%{transform:scale(1.05) translate(18px,-2px);filter:invert(1);clip-path:inset(0 0 65% 0)}
+  66%{transform:scale(1.1) translate(-10px,5px) skewY(-5deg);filter:contrast(2.2) drop-shadow(10px 0 0 rgba(255,0,60,.8)) drop-shadow(-10px 0 0 rgba(0,220,255,.8));clip-path:inset(55% 0 10% 0)}
+  70%{transform:scale(1.03);filter:brightness(2.4);clip-path:inset(0)}
+  74%{transform:scale(1.07) translate(12px,0) skewX(9deg);filter:drop-shadow(8px 0 0 rgba(255,0,60,.8)) drop-shadow(-8px 0 0 rgba(0,220,255,.8)) saturate(2);clip-path:inset(0 0 30% 0)}
+  80%{transform:scale(1.04) translate(-6px,2px);filter:hue-rotate(-60deg);clip-path:inset(15% 0 0 0)}
+  86%{transform:scale(1.03) translate(4px,0);filter:drop-shadow(4px 0 0 rgba(255,0,60,.6)) drop-shadow(-4px 0 0 rgba(0,220,255,.6));clip-path:inset(0)}
+  92%{transform:scale(1.02) translate(-2px,0);filter:drop-shadow(2px 0 0 rgba(255,0,60,.4)) drop-shadow(-2px 0 0 rgba(0,220,255,.4))}
+  100%{transform:none;filter:none;clip-path:inset(0)}
+}
+@keyframes bh-bars{
+  0%{opacity:0}
+  4%{opacity:1;transform:translateY(-30%) scaleY(1.4)}
+  12%{opacity:1;transform:translateY(25%) scaleY(.6)}
+  20%{opacity:.6;transform:translateY(-10%) scaleY(2)}
+  28%{opacity:1;transform:translateY(40%) scaleY(.8)}
+  36%{opacity:0}
+  40%{opacity:1;transform:translateY(-45%) scaleY(1.2)}
+  48%{opacity:1;transform:translateY(10%) scaleY(2.5)}
+  50%,57%{opacity:0}
+  58%{opacity:1;transform:translateY(-20%) scaleY(1)}
+  66%{opacity:.8;transform:translateY(30%) scaleY(1.6)}
+  74%{opacity:.5;transform:translateY(-5%) scaleY(.7)}
+  80%,100%{opacity:0}
+}
+@keyframes bh-scan{0%{opacity:0}4%,48%{opacity:1;background-position:0 0}24%{background-position:0 13px}50%,57%{opacity:0}58%,85%{opacity:1;background-position:0 7px}100%{opacity:0}}
+@keyframes bh-tv{
+  0%{transform:scale(1.03);filter:brightness(1.2);opacity:1;animation-timing-function:cubic-bezier(.6,0,.9,.4)}
+  14%{transform:scale(1.03,.006);filter:brightness(6) saturate(0);opacity:1;animation-timing-function:cubic-bezier(.5,0,.9,.5)}
+  25%{transform:scale(.012,.006);filter:brightness(9) saturate(0);opacity:1}
+  29%{transform:scale(.012,.006);filter:brightness(9) saturate(0);opacity:0}
+  57%{transform:scale(.012,.006);filter:brightness(9) saturate(0);opacity:0}
+  58%{transform:scale(.012,.006);filter:brightness(9) saturate(0);opacity:1;animation-timing-function:cubic-bezier(.2,.6,.4,1)}
+  68%{transform:scale(1.03,.006);filter:brightness(6) saturate(0);opacity:1;animation-timing-function:cubic-bezier(.2,.7,.3,1)}
+  80%{transform:scale(1.03,1.08);filter:brightness(2.2) contrast(1.4)}
+  86%{transform:scale(1.03,.97);filter:brightness(1.5)}
+  93%{transform:scale(1,1.01);filter:brightness(1.15)}
+  100%{transform:none;filter:none;opacity:1}
+}
+/* birdhouse loot stickers (js/birdhouse.js bhPlace): the About sticker look, centred on --x / --y; inside the photo window,
+   out in the When I'm offline section, or fixed at the pointer while carried */
+.bh-stk{left:var(--x,50%);top:var(--y,50%);width:58px;height:58px;translate:-50% -50%;z-index:3}
+.bh-stk svg{display:block;width:100%;height:100%;pointer-events:none;overflow:visible}
+.bh-stk.bh-sec{z-index:40;width:72px;height:72px}
+.bh-stk.bh-fixed{position:fixed;z-index:990;width:72px;height:72px}
+.reel-more{position:relative}
+.bh-stk.bh-coin.bh-reel{top:calc(75% + 29px);width:64px;height:64px}
+.bh-stk.bh-lbf{position:fixed;z-index:310;width:72px;height:72px} /* the coin above the open logbook's dim */
+/* the map's compass needle and the nail holding it (js/birdhouse.js nailPull / fixCompass) */
+.map-needle,.map-nail{position:absolute;left:var(--x);top:var(--y);translate:-50% -50%;z-index:4;pointer-events:none}
+.map-needle{width:3.2%;aspect-ratio:16 / 60;rotate:var(--nr,0deg);transition:rotate .7s cubic-bezier(.34,1.56,.64,1),filter .2s}
+.map-nail{width:4.4%;aspect-ratio:1;z-index:5;filter:drop-shadow(0 1px 1px rgba(0,0,0,.35))}
+.map-needle svg,.map-nail svg,.bh-nail svg{display:block;width:100%;height:100%;overflow:visible}
+.map-needle.loose{pointer-events:auto;cursor:grab;touch-action:none;filter:drop-shadow(0 3px 4px rgba(0,0,0,.3))}
+.map-needle.loose:hover{filter:drop-shadow(0 6px 8px rgba(0,0,0,.4))}
+.map-needle.nd-sec{z-index:40;width:18px}
+.map-needle.nd-drag{position:fixed;z-index:990;width:20px}
+.map-needle.nd-poof{pointer-events:none}
+.map-needle.drag{cursor:grabbing;transition:filter .2s;filter:drop-shadow(0 16px 18px rgba(0,0,0,.45))}
+.map-nail.fly{position:fixed;z-index:992;aspect-ratio:60 / 16;filter:drop-shadow(0 6px 8px rgba(0,0,0,.4))}
+.bh-nail-spot{position:absolute;left:39%;top:9%;width:36%;height:0;translate:-50% 0;pointer-events:none}
+.bh-nail{position:absolute;left:39%;top:9%;width:36%;aspect-ratio:60 / 16;translate:-50% -50%;rotate:12deg;pointer-events:none}
+.cmp-ndl{transform-box:view-box;transform-origin:50px 55px}
+/* the geocache dug up on the map (js/birdhouse.js dig / wireCache): static stickers, they can't be dragged */
+.gc-hole,.gc-cache,.gc-log,.gc-dirt{position:absolute;left:var(--x);top:var(--y);translate:-50% -50%;pointer-events:none}
+.gc-hole{width:12%;aspect-ratio:2 / 1;z-index:2;transition:scale .3s ease-out}
+.gc-pile{position:absolute;left:var(--x);top:var(--y);translate:-50% -50%;width:10%;aspect-ratio:2 / 1;z-index:2;pointer-events:none;transform-origin:50% 90%;transition:scale .35s cubic-bezier(.3,.7,.4,1)}
+.gc-pile svg{display:block;width:100%;height:100%;overflow:visible}
+.gc-cache,.gc-log{z-index:6;filter:drop-shadow(0 8px 12px rgba(0,0,0,.4));user-select:none;-webkit-user-select:none}
+.gc-cache{width:15%;aspect-ratio:100 / 80;pointer-events:auto;cursor:pointer;transition:scale .3s cubic-bezier(.34,1.56,.64,1)}
+.gc-cache:not(.open):hover{scale:1.05}
+.gc-cache.open{cursor:default}
+.gc-log{width:8%;aspect-ratio:60 / 70;z-index:5}
+.gc-log.gc-open-able{pointer-events:auto;cursor:zoom-in;transition:scale .25s cubic-bezier(.34,1.56,.64,1)}
+.gc-log.gc-open-able:hover{scale:1.1}
+.gc-log:focus-visible{outline:2px dashed var(--or);outline-offset:4px}

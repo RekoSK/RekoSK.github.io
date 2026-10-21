@@ -1,0 +1,30 @@
+/* rekosk.dev: buttons (orange / ink pills and the brand-coloured channel buttons) */
+/* buttons */
+.btn{--mx:0px;--my:0px;position:relative;isolation:isolate;overflow:hidden;display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:54px;padding:0 28px;border:0;border-radius:999px;font:600 16px/1 'Poppins',sans-serif;text-decoration:none;cursor:pointer;transform:translate(var(--mx),var(--my));transition:transform .4s cubic-bezier(.2,.8,.2,1),color .3s,box-shadow .3s,background .3s}
+.btn:focus-visible{outline:2px dashed var(--or);outline-offset:4px}
+.btn .ico{width:18px;height:18px;transition:transform .4s cubic-bezier(.34,1.56,.64,1)}
+.btn:hover .ico{transform:translateX(4px) rotate(-10deg)}
+.btn-or{background:var(--or);color:#0b0b0b}
+.btn-or::before{content:"";position:absolute;left:var(--hx,50%);top:var(--hy,50%);z-index:-1;width:12px;height:12px;margin:-6px 0 0 -6px;border-radius:50%;background:#0b0b0b;transform:scale(0);transition:transform .55s cubic-bezier(.2,.8,.2,1)}
+.btn-or:hover{color:var(--or)}
+.btn-or:hover::before{transform:scale(44)}
+.btn-ghost{background:transparent;color:var(--white);box-shadow:inset 0 0 0 2px #383838}
+.btn-ghost:hover{color:var(--or);box-shadow:inset 0 0 0 2px var(--or)}
+/* Social media: brand-coloured channel buttons (same pill + growing black circle as .btn-or) */
+.soc-btns{display:flex;flex-wrap:wrap;gap:14px}
+.btn .ico-brand{width:22px;height:22px;fill:currentColor;flex:none;transition:transform .4s cubic-bezier(.34,1.56,.64,1)}
+.btn:hover .ico-brand{transform:scale(1.15) rotate(-8deg)}
+.btn-yt .ib-cut{fill:#ff0033;transition:fill .3s}
+.btn-yt:hover .ib-cut{fill:#0b0b0b}
+.btn-yt,.btn-ig{color:#fff}
+.btn-yt{background:#ff0033}
+.btn-ig{background:linear-gradient(45deg,#feda75,#fa7e1e 25%,#d62976 50%,#962fbf 75%,#4f5bd5)}
+.btn-yt::before,.btn-ig::before{content:"";position:absolute;left:var(--hx,50%);top:var(--hy,50%);z-index:-1;width:12px;height:12px;margin:-6px 0 0 -6px;border-radius:50%;background:#0b0b0b;transform:scale(0);transition:transform .55s cubic-bezier(.2,.8,.2,1)}
+.btn-yt:hover::before,.btn-ig:hover::before{transform:scale(44)}
+.btn-yt:hover{color:#ff0033}
+.btn-ig:hover{color:#e1306c}
+.btn-strava{background:#fc4c02;color:#fff}
+.btn-strava::before{content:"";position:absolute;left:var(--hx,50%);top:var(--hy,50%);z-index:-1;width:12px;height:12px;margin:-6px 0 0 -6px;border-radius:50%;background:#0b0b0b;transform:scale(0);transition:transform .55s cubic-bezier(.2,.8,.2,1)}
+.btn-strava:hover::before{transform:scale(44)}
+.btn-strava:hover{color:#fc4c02}
+.off-btns{margin-top:28px;justify-content:center}

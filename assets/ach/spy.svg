@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- a spy: dark fedora with an orange band, sunglasses, trench coat with the collar turned up -->
+  <g stroke="#0b0b0b" stroke-width="2" stroke-linejoin="round">
+    <path d="M10 60C10 47 18 41 32 41S54 47 54 60Z" fill="#c9a06a"/>
+    <path d="M32 41L22 44L26 60M32 41L42 44L38 60" fill="none" stroke-width="1.8"/>
+    <path d="M16 49L23 37L30 47Z" fill="#fe7700"/>
+    <path d="M48 49L41 37L34 47Z" fill="#fe7700"/>
+    <path d="M22 26C22 37 26 42 32 42S42 37 42 26Z" fill="#f4f1ea"/>
+    <path d="M27 36.5q5 2 10 0" fill="none" stroke-width="1.6" stroke-linecap="round"/>
+    <path d="M21.5 27.5h21v2.4c0 3-2.4 4.6-5.2 4.6s-4.6-1.8-5.3-3.8c-.7 2-2.5 3.8-5.3 3.8s-5.2-1.6-5.2-4.6Z" fill="#0b0b0b"/>
+    <path d="M7 25.5c4-2.5 12-3.5 25-3.5s21 1 25 3.5c-4 2-12 3-25 3S11 27.5 7 25.5Z" fill="#2a2a2a"/>
+    <path d="M17 23.5L19.5 11C21 7 26 7.5 32 10c6-2.5 11-3 12.5 1L47 23.5c-5 1.4-10 1.8-15 1.8s-10-.4-15-1.8Z" fill="#2a2a2a"/>
+    <path d="M18 20c5 1.6 9.5 2 14 2s9-.4 14-2l.8 3.6c-5 1.4-10 1.8-14.8 1.8s-9.8-.4-14.8-1.8Z" fill="#fe7700" stroke-width="1.6"/>
+  </g>
+  <path d="M24.5 29.5l2.5-0.2M35.5 29.5l2.5-0.2" stroke="#fff" stroke-opacity=".7" stroke-width="1.6" stroke-linecap="round"/>
+  <path d="M22 13.5c1-2.5 3.5-3 6-2" stroke="#fff" stroke-opacity=".25" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+</svg>

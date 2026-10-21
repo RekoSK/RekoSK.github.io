@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- the map's fish, silenced: the nav's speaker icon (with its X) sits in its middle as a badge -->
+  <g transform="translate(32 37) rotate(-12) scale(2.2)" stroke="#0b0b0b" stroke-width="1" stroke-linejoin="round">
+    <path d="M-7 0L-12.5-4.5L-11.5 0L-12.5 4.5Z" fill="#ff9a3d"/>
+    <path d="M9 0C6-5.5-4-6-8 0C-4 6 6 5.5 9 0Z" fill="#fe7700"/>
+    <path d="M-1-4.6L1-8L4-4.2Z" fill="#ff9a3d"/>
+    <circle cx="4.6" cy="-1" r="1" fill="#0b0b0b" stroke="none"/>
+  </g>
+  <circle cx="32" cy="36" r="13.6" fill="#f4f1ea" stroke="#0b0b0b" stroke-width="2"/>
+  <g transform="translate(19.5 24) scale(1)" fill="none" stroke="#0b0b0b" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M11 5L6 9H3v6h3l5 4z" fill="#0b0b0b"/>
+    <path d="M16 9l6 6M22 9l-6 6" stroke="#e5262f"/>
+  </g>
+</svg>

@@ -1,0 +1,167 @@
+/* rekosk.dev: "When I'm offline...": the paper map, its points and cards, and the meadow, fish, bear and crows */
+/* when I'm offline: a paper map with a dashed trail; click a point → a pin drops on it and its card pops up */
+.off-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(32px,5vw,72px);align-items:center}
+@media (min-width:901px){.off-grid .off-text{order:2}}
+.off-text .about-p{margin-bottom:0}
+.lead .fill-hover{font-weight:800;background-image:linear-gradient(90deg,var(--or) calc(var(--fill) * 100%),var(--white) calc(var(--fill) * 100% + .5px))}
+.map{position:relative;z-index:3;width:100%;max-width:620px;justify-self:center;padding:10px;border-radius:6px;background:#f4f1ea;box-shadow:0 26px 50px rgba(0,0,0,.5);rotate:-1.2deg}
+.map-tape{position:absolute;z-index:6;top:-10px;width:90px;height:26px;background:rgba(254,119,0,.78);pointer-events:none}
+.map-tape-l{left:-22px;rotate:-38deg}.map-tape-r{right:-22px;rotate:38deg}
+.map-stage{position:relative;isolation:isolate;aspect-ratio:5 / 4;border-radius:2px;background:linear-gradient(#e7e0d2 1px,transparent 1px) 0 0 / 10% 12.5%,linear-gradient(90deg,#e7e0d2 1px,transparent 1px) 0 0 / 10% 12.5%,#f4f1ea;box-shadow:inset 0 0 0 2px #0b0b0b}
+/* the creases of a folded paper map */
+.map-stage::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(90deg,transparent 32.6%,rgba(0,0,0,.07) 33.2%,rgba(255,255,255,.4) 33.5%,transparent 34.6%,transparent 65.9%,rgba(0,0,0,.07) 66.5%,rgba(255,255,255,.4) 66.8%,transparent 67.9%),linear-gradient(transparent 49%,rgba(0,0,0,.06) 49.8%,rgba(255,255,255,.35) 50.2%,transparent 51.4%)}
+.map-art,.map-route,.map-fx{position:absolute;inset:0;display:block;width:100%;height:100%;overflow:visible;pointer-events:none}
+.map-txt{font:600 10px 'Montserrat',monospace;fill:#8c8577}
+.map-n{font-weight:700;font-size:11px;fill:#0b0b0b}
+.route{fill:none;stroke:#0b0b0b;stroke-width:2.6;stroke-dasharray:9 8;animation:routeMarch 1.5s linear infinite}
+.route-halo{fill:none;stroke:#f4f1ea;stroke-width:9;stroke-linecap:round;opacity:.8}
+@keyframes routeMarch{to{stroke-dashoffset:-17}}
+/* the trail draws itself (a mask that grows along it) the first time the map scrolls into view */
+.route-draw{fill:none;stroke:#fff;stroke-width:18;stroke-dasharray:1 1;stroke-dashoffset:1}
+.map.drawn .route-draw{stroke-dashoffset:0;transition:stroke-dashoffset var(--draw,2.2s) linear}
+.map.wait .spot-btn,.map.wait .map-home{scale:0}
+.map.drawn .spot-btn,.map.drawn .map-home{transition:scale .5s cubic-bezier(.34,1.56,.64,1) var(--t,0s)}
+.map-home{position:absolute;left:var(--x);top:var(--y);z-index:2;width:34px;height:26px;margin:-13px 0 0 -17px;pointer-events:none}
+.map-home svg{display:block;width:100%;height:100%}
+.map-home .mk{position:absolute;left:50%;top:calc(100% + 2px);translate:-50% 0;rotate:-5deg;font-size:13px;line-height:1;color:#0b0b0b;white-space:nowrap}
+.spots{position:absolute;inset:0;margin:0;padding:0;list-style:none;pointer-events:none}
+.spot-btn{all:unset;box-sizing:border-box;position:absolute;left:var(--x);top:var(--y);z-index:2;display:grid;place-items:center;width:44px;height:44px;margin:-22px 0 0 -22px;border-radius:50%;cursor:pointer;pointer-events:auto;-webkit-tap-highlight-color:transparent}
+.spot-btn:focus-visible{outline:2px dashed var(--or);outline-offset:-1px}
+.spot-dot{position:relative;display:block;width:22px;height:22px;border-radius:50%;background:#f4f1ea;box-shadow:inset 0 0 0 3px #0b0b0b,0 3px 6px rgba(0,0,0,.25);transition:transform .35s cubic-bezier(.34,1.56,.64,1)}
+.spot-dot::after{content:"";position:absolute;inset:6px;border-radius:50%;background:var(--or);transition:inset .3s cubic-bezier(.34,1.56,.64,1)}
+/* a slow ring around the points nobody has opened yet, so they look clickable */
+.spot-dot::before{content:"";position:absolute;inset:-2px;border-radius:50%;box-shadow:0 0 0 2px var(--or);opacity:0;animation:spotRing 2.8s ease-out infinite}
+.spot:nth-child(2) .spot-dot::before{animation-delay:.5s}.spot:nth-child(3) .spot-dot::before{animation-delay:1s}.spot:nth-child(4) .spot-dot::before{animation-delay:1.5s}.spot:nth-child(5) .spot-dot::before{animation-delay:2s}
+@keyframes spotRing{0%{opacity:.85;transform:scale(1)}60%,100%{opacity:0;transform:scale(2.1)}}
+.spot.seen .spot-dot::before{animation:none}
+.spot.seen .spot-dot::after{inset:4px}
+.spot-btn:hover .spot-dot{transform:scale(1.25)}
+.spot.on .spot-dot{transform:scale(.8)}
+.spot-btn.ping .spot-dot{animation:spotPing .55s cubic-bezier(.34,1.56,.64,1)}
+@keyframes spotPing{40%{transform:scale(1.7)}}
+.spot-lbl{position:absolute;left:50%;top:calc(100% - 6px);translate:-50% 0;padding:3px 8px;border-radius:999px;background:#0b0b0b;color:var(--white);font:600 11px/1.3 'Montserrat',monospace;white-space:nowrap;transition:background .25s,color .25s}
+.spot-lbl b{color:var(--or);font-weight:700}
+.spot-btn:hover .spot-lbl,.spot.on .spot-lbl{background:var(--or);color:#0b0b0b}
+.spot-btn:hover .spot-lbl b,.spot.on .spot-lbl b{color:#0b0b0b}
+/* the pin: its tip lands exactly on the point */
+.map-pin{position:absolute;left:var(--x,50%);top:var(--y,50%);z-index:3;width:34px;height:46px;margin:-44.5px 0 0 -17px;pointer-events:none;visibility:hidden}
+.map-pin svg{display:block;width:100%;height:100%;overflow:visible;transform-origin:50% 100%}
+.map-pin::after{content:"";position:absolute;left:50%;top:100%;width:18px;height:6px;margin:-4px 0 0 -9px;border-radius:50%;background:rgba(0,0,0,.28);z-index:-1}
+.map-pin.drop,.map-pin.up{visibility:visible}
+.map-pin.drop svg{animation:pinDrop .5s cubic-bezier(.3,0,.5,1) both}
+.map-pin.drop::after{animation:pinShadow .5s ease-in both}
+@keyframes pinDrop{0%{opacity:0;transform:translateY(-80px)}40%{opacity:1}62%{transform:translateY(0) scale(1.12,.84)}80%{transform:translateY(-7px) scale(.96,1.05)}100%{transform:none}}
+@keyframes pinShadow{0%{opacity:0;scale:.3}62%,100%{opacity:1;scale:1}}
+.map-pin.up svg{animation:pinUp .28s ease-in forwards}
+.map-pin.up::after{animation:pinShadowOut .28s ease-in forwards}
+@keyframes pinUp{to{opacity:0;transform:translateY(-46px)}}
+@keyframes pinShadowOut{to{opacity:0;scale:.3}}
+/* the pop-up card (placed above or below the pin by js) */
+.spot-card{position:absolute;left:0;top:0;z-index:5;width:min(330px,calc(100% - 16px));padding:16px 18px 12px;border-radius:14px;background:#141414;color:var(--fog);box-shadow:0 0 0 2px #0b0b0b,0 0 0 4px var(--or),0 26px 50px rgba(0,0,0,.6);text-align:left;cursor:auto;pointer-events:auto;transform-origin:var(--ax,50%) calc(100% + 40px)}
+.spot-card[hidden]{display:none}
+.spot-card:focus{outline:none}
+.spot-card.below{transform-origin:var(--ax,50%) -20px}
+.spot-card.in{animation:spotIn .45s cubic-bezier(.34,1.56,.64,1) .14s both}
+.spot-card.out{animation:spotOut .18s ease-in forwards}
+@keyframes spotIn{from{opacity:0;scale:.5}}
+@keyframes spotOut{to{opacity:0;scale:.85}}
+.spot-card::after{content:"";position:absolute;left:var(--ax,50%);top:calc(100% + 4px);width:20px;height:11px;margin-left:-10px;background:var(--or);clip-path:polygon(0 0,100% 0,50% 100%);pointer-events:none}
+.spot-card.below::after{top:auto;bottom:calc(100% + 4px);clip-path:polygon(50% 0,100% 100%,0 100%)}
+.spot-x{all:unset;box-sizing:border-box;position:absolute;top:8px;right:8px;display:grid;place-items:center;width:32px;height:32px;border-radius:8px;color:var(--gray);cursor:pointer;transition:background .2s,color .2s}
+.spot-x:hover{background:#262626;color:var(--or)}
+.spot-x:focus-visible{outline:2px dashed var(--or);outline-offset:2px}
+.spot-x svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2.6;stroke-linecap:round}
+.spot-k{display:block;padding-right:34px;font:600 11px/1.3 'Montserrat',monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--or)}
+.spot-t{margin:4px 0 6px;padding-right:28px;font:800 21px/1.2 'Poppins',sans-serif;letter-spacing:-.01em;color:var(--white)}
+.spot-card p{margin:0;font-size:14px;line-height:1.6;color:var(--mid)}
+/* photos as polaroids; more than three scroll sideways */
+.pola-row{display:flex;gap:10px;margin:10px -8px 0;padding:10px 8px 12px;overflow-x:auto;scrollbar-width:thin;scrollbar-color:#3a3a3a transparent}
+.pola{flex:0 0 calc((100% - 20px) / 3);margin:0;padding:5px 5px 3px;border-radius:2px;background:#f4f1ea;box-shadow:0 6px 14px rgba(0,0,0,.45);rotate:-3deg;transition:rotate .35s cubic-bezier(.34,1.56,.64,1),scale .35s cubic-bezier(.34,1.56,.64,1)}
+.pola:nth-child(3n+2){rotate:2.5deg}.pola:nth-child(3n){rotate:-1.5deg}
+.pola:hover{rotate:0deg;scale:1.06}
+.pola-img{position:relative;display:block;aspect-ratio:1;overflow:hidden;background:repeating-linear-gradient(-45deg,#e7e0d3 0 6px,#ddd5c6 6px 12px)}
+.pola-img img{display:block;width:100%;height:100%;object-fit:cover}
+/* empty = a placeholder drawing (mountains + sun) until a real photo goes in */
+.pola-img:empty::before{content:"";position:absolute;inset:40% 0 0;background:#b9b2a6;clip-path:polygon(0 100%,0 72%,26% 22%,44% 56%,66% 8%,100% 66%,100% 100%)}
+.pola-img:empty::after{content:"";position:absolute;left:64%;top:14%;width:18%;aspect-ratio:1;border-radius:50%;background:var(--or)}
+.pola figcaption{display:block;padding-top:3px;overflow:hidden;font:400 12px/1.3 'Permanent Marker',cursive;color:#1b1b1b;text-align:center;white-space:nowrap;text-overflow:ellipsis}
+@media (prefers-reduced-motion:reduce){.route,.spot-dot::before{animation:none}.map-pin.drop svg,.map-pin.drop::after,.spot-card.in{animation:none}.map.drawn .route-draw,.map.drawn .spot-btn,.map.drawn .map-home{transition:none}}
+@media (max-width:900px){.off-grid{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:600px){.map{padding:7px}.map-tape{width:64px;height:20px;top:-7px}.map-tape-l{left:-16px}.map-tape-r{right:-16px}.spot-nm{display:none}.spot-lbl{padding:2px 6px;font-size:10px}.spot-dot{width:18px;height:18px}.spot-dot::after{inset:5px}.spot.seen .spot-dot::after{inset:3px}.map-home{scale:.8}.map-home .mk{font-size:12px}.map-txt{font-size:12px}}
+
+/* the corner tapes live inside the map stage (offset by the paper padding), so an open card (z 8) can sit above them */
+.map-stage .map-tape{top:-20px}.map-stage .map-tape-l{left:-32px}.map-stage .map-tape-r{right:-32px}
+.map-stage .spot-card{z-index:8}
+@media (max-width:600px){.map-stage .map-tape{top:-14px}.map-stage .map-tape-l{left:-23px}.map-stage .map-tape-r{right:-23px}}
+/* point 05 is the end of the trail: a waving orange flag instead of a dot (its pole stands on the point) */
+.spot-end .spot-dot{background:none;box-shadow:none;border-radius:0}
+.spot-end .spot-dot::before,.spot-end .spot-dot::after{display:none}
+.spot-flag{position:absolute;left:50%;bottom:50%;width:30px;height:38px;margin-left:-3px;margin-bottom:-1px;overflow:visible;filter:drop-shadow(0 2px 2px rgba(0,0,0,.2))}
+.spot-flag .fl-cloth{fill:var(--or);stroke:#0b0b0b;stroke-width:2;stroke-linejoin:round}
+.spot-flag .fl-pole{fill:none;stroke:#0b0b0b;stroke-width:2.6;stroke-linecap:round}
+.spot-flag .fl-knob{fill:#0b0b0b}
+.spot-flag .fl-shadow{fill:rgba(0,0,0,.25)}
+.spot-end .spot-dot{transform-origin:50% 100%}
+@media (max-width:600px){.spot-flag{width:24px;height:30px;margin-left:-2.4px}}
+/* name of the mountains, bent over the hill like half a circle */
+.map-tatry{font:400 30px 'Permanent Marker',cursive;fill:#3a3a3a;letter-spacing:.28em}
+/* meadow grass: sways on its own; hold the left button and sweep over it to push the blades aside */
+.map-grass .gt,.map-grass .gt-sway{transform-box:fill-box;transform-origin:50% 100%}
+.map-grass .gt{transform:rotate(var(--bend,0deg)) scaleY(var(--squash,1));transition:transform .9s cubic-bezier(.34,1.56,.64,1)}
+.map-grass .gt.pushed{transition:transform .12s ease-out}
+.map-grass .gt-sway{animation:grassSway 2.6s ease-in-out var(--d,0s) infinite alternate}
+@keyframes grassSway{from{transform:rotate(-7deg)}to{transform:rotate(7deg)}}
+@media (prefers-reduced-motion:reduce){.map-grass .gt-sway{animation:none}}
+.grass-fx{pointer-events:none}.grass-fx circle{fill:var(--or);stroke:#0b0b0b;stroke-width:.6;transform-box:fill-box;transform-origin:center}
+.map-stage.sweeping .spot-btn,.map-stage.sweeping .spot-card{pointer-events:none}
+/* orange fish leaping out of the lake */
+.map-fish{pointer-events:none}
+.map-fish .fish path{fill:var(--or);stroke:#0b0b0b;stroke-width:1.4;stroke-linejoin:round}
+.map-fish .fish .fin{fill:var(--or2)}
+.map-fish .fish circle{fill:#0b0b0b}
+.map-fish .splash{fill:none;stroke:#6f98a8;stroke-width:1.5}
+.map-fish .drop{fill:#8fb4c3}
+/* the rare giant: golden, with sparkles trailing around it */
+.map-fish .fish-giant path{fill:#ffc531}
+.map-fish .fish-giant .fin{fill:#ffe08a}
+.map-fish .fish-giant{filter:drop-shadow(0 0 3px rgba(255,214,90,.9))}
+.map-fish .sparkle{fill:#fff6c4;stroke:#e08a00;stroke-width:.6;stroke-linejoin:round;transform-box:fill-box;transform-origin:center}
+/* catching a fish: grab it mid-jump and drag it somewhere on the map */
+.map-fish .fish-hit{fill:none;pointer-events:all;cursor:grab;touch-action:none}
+.map-fish .fish.caught .fish-hit{pointer-events:none}
+.map.fish-holding,.map.fish-holding *{cursor:grabbing!important}
+.map-fish .fish-shadow{fill:rgba(0,0,0,.22)}
+.map-fish .crumb{fill:var(--or)}
+/* ...the legs it grows to walk back to the lake (stroke widths are set by js, they scale with the fish) */
+.map-fish .fleg-o{fill:none;stroke:#0b0b0b;stroke-linecap:round;stroke-linejoin:round}
+.map-fish .fleg-i{fill:none;stroke:var(--or2);stroke-linecap:round;stroke-linejoin:round}
+.map-fish .fleg.far .fleg-i{stroke:#c96a14}
+.map-fish .ffoot{fill:var(--or);stroke:#0b0b0b}
+.map-fish .fleg.far .ffoot{fill:#c96a14}
+.map-fish .dust{fill:#cbbfa6}
+/* ...the bear in the mountains (side-on, walks out from behind the peaks) */
+.map-fish .bear-fur{fill:#7a5536;stroke:#0b0b0b;stroke-width:1.6;stroke-linejoin:round}
+.map-fish .bear-far .bear-fur{fill:#5e3f27}
+.map-fish .bear-paw{fill:#3b2716;stroke:#0b0b0b;stroke-width:1.2}
+.map-fish .bear-head{fill:#7a5536}
+.map-fish .bear-outline{fill:none;stroke:#0b0b0b;stroke-width:1.6;stroke-linejoin:round;stroke-linecap:round}
+.map-fish .bear-line{fill:none;stroke:#0b0b0b;stroke-width:.9;stroke-linecap:round;opacity:.45}
+.map-fish .bear-mouth{fill:#2a0f0f;stroke:#0b0b0b;stroke-width:.8;stroke-linejoin:round}
+.map-fish .bear-ink{fill:#0b0b0b}
+.map-fish .bear-happy{fill:none;stroke:#0b0b0b;stroke-width:1.2;stroke-linecap:round}
+.map-fish .bear-scarf{fill:var(--or);stroke:#0b0b0b;stroke-width:1.2;stroke-linejoin:round}
+/* ...and the crows in the trees */
+.map-fish .crow-b{fill:#1d1d1d;stroke:#0b0b0b;stroke-width:1.1;stroke-linejoin:round}
+.map-fish .crow-w{fill:#2e2e2e;stroke:#0b0b0b;stroke-width:1;stroke-linejoin:round}
+.map-fish .crow-beak{fill:var(--or);stroke:#0b0b0b;stroke-width:.8;stroke-linejoin:round}
+.map-fish .crow-eye{fill:#f4f1ea}
+.map-fish .crow-leg{fill:none;stroke:#0b0b0b;stroke-width:1;stroke-linecap:round}
+/* the fish (and whatever eats them) sit above the points' dots and labels, below the pin and the pop-up cards;
+   the layer itself ignores the cursor, only a fish's grab area catches it */
+.map-fx{z-index:3}
+/* the "!" over a fish that has just spotted the bear */
+.map-fish .alarm circle{fill:var(--or);stroke:#0b0b0b;stroke-width:1.2}
+.map-fish .alarm text{font:600 7.5px 'Montserrat',monospace;fill:#0b0b0b}
+
+/* waypoint pop-ups: no number above the title (the numbers stay on the map) */
+.spot-k{display:none}

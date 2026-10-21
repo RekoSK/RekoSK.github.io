@@ -1,0 +1,1 @@
+Copyright (c) 2026 Andrej "Reko" Revák. All rights reserved. No permission is granted to copy, modify or redistribute this code or its assets without prior written permission from the owner.

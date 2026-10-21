@@ -1,0 +1,187 @@
+/* rekosk.dev: the About section's stickers, the magnifying glass, the crack and the eyes' blink counter */
+.board{position:relative;z-index:2;height:clamp(480px,42vw,580px);overflow:visible}
+.stk{scale:var(--sz,1);position:absolute;touch-action:none;user-select:none;-webkit-user-select:none;cursor:grab;translate:var(--sx,0px) var(--sy,0px);rotate:var(--rot,0deg);filter:drop-shadow(0 10px 16px rgba(0,0,0,.5));transition:scale .3s cubic-bezier(.34,1.56,.64,1),rotate .3s cubic-bezier(.34,1.56,.64,1),filter .3s}
+.stk:hover{scale:calc(var(--sz,1) * 1.05)}
+.stk.rotating,.stk.scaling{transition:filter .3s;scale:calc(var(--sz,1) * 1.05)}
+.sc-h{top:-12px;bottom:auto;cursor:nesw-resize}
+.rot-h{--hs:0;position:absolute;right:-12px;bottom:-12px;z-index:5;width:30px;height:30px;display:grid;place-items:center;border-radius:50%;background:var(--or);color:#0b0b0b;box-shadow:0 2px 8px rgba(0,0,0,.5);cursor:grab;touch-action:none;opacity:0;visibility:hidden;transform:scale(0);transition:transform .12s linear,opacity .12s linear,visibility 0s .12s}
+.rot-h::before{content:none}
+.rot-h svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+/* shown while the cursor is near it (JS sets --hs: 1 close by → 0 far away); hovering the sticker arms it again */
+.stk.armed .rot-h,.stk.rotating .rot-h,.stk.scaling .rot-h{opacity:1;visibility:visible;transform:scale(calc(var(--hs) / var(--sz,1)));transition:transform .12s linear,opacity .12s linear,visibility 0s}
+.stk.drag .rot-h{opacity:0;visibility:hidden;transition:none}
+.rot-h:active{cursor:grabbing}
+@media (hover:none){.stk .rot-h{visibility:visible;opacity:.95;transform:none}}
+.stk-warn{transform-origin:center}
+.stk.drag{cursor:grabbing;scale:calc(var(--sz,1) * 1.1);filter:drop-shadow(0 26px 30px rgba(0,0,0,.6))}
+/* heavy: barely lifts off the ground, swings with the pull */
+.stk-warn{rotate:calc(var(--rot,0deg) + var(--tilt,0deg))}
+.stk-warn.drag{scale:calc(var(--sz,1) * 1.005);filter:drop-shadow(0 4px 6px rgba(0,0,0,.65));transition:scale .4s,rotate .45s ease-out,filter .4s}
+.stk-heart{left:51%;top:3%;width:70px;--rot:8deg;display:flex;flex-direction:column;align-items:center;gap:4px}
+.stk-heart > svg{display:block;width:70px;height:60px;fill:#e5262f}
+.stk-heart .hl{fill:#ff9a9e}
+.stk-keys{left:1%;top:93%;--rot:-8deg;display:flex;align-items:center;gap:5px}
+.kc{display:block;padding:8px 12px 13px;border-radius:10px;background:#f4f1ea;color:#0b0b0b;box-shadow:inset 0 -5px 0 #cfc8bc,0 0 0 2px #0b0b0b;font:600 16px/1 'Montserrat',monospace;min-width:14px;text-align:center;transition:background .15s,box-shadow .15s,transform .12s,color .15s}
+.kc.hit{background:var(--or);box-shadow:inset 0 -3px 0 #b35400,0 0 0 2px #0b0b0b;transform:translateY(2px)}
+.stk-keys.done .kc{background:#35d265;color:#062b12;box-shadow:inset 0 -5px 0 #1f9a43,0 0 0 2px #0b0b0b;transform:none;transition-duration:.3s}
+.stk-keys.done .kc{transition-delay:var(--d,0s)}
+.stk-keys.done .kc-plus{color:#35d265;transition:color .3s .2s}
+.kc-plus{transition:color .2s}
+.stk-keys.nope{animation:keysNope .35s}
+@keyframes keysNope{20%{translate:calc(var(--sx,0px) - 5px) var(--sy,0px)}40%{translate:calc(var(--sx,0px) + 5px) var(--sy,0px)}60%{translate:calc(var(--sx,0px) - 3px) var(--sy,0px)}80%{translate:calc(var(--sx,0px) + 2px) var(--sy,0px)}}
+.kc-plus{color:var(--or);font:600 18px/1 'Montserrat',monospace}
+.stk-stamp{right:3%;top:70%;width:150px;--rot:-9deg;display:flex;flex-direction:column;align-items:center;padding:12px 8px;border-radius:10px;background:#0b0b0b;color:var(--or);text-transform:uppercase;text-align:center;box-shadow:inset 0 0 0 3px var(--or),inset 0 0 0 6px #0b0b0b,inset 0 0 0 7px var(--or)}
+.stk-stamp span{font-size:10px;font-weight:700;letter-spacing:.18em}
+.stk-stamp b{font-size:17px;font-weight:900;letter-spacing:.04em;line-height:1.1}
+.stk-bubble{left:60%;top:93%;--rot:5deg;padding:10px 16px;border-radius:18px;background:#f4f1ea;color:#0b0b0b;font-size:20px;line-height:1}
+.bb-slot{display:inline-block;position:relative;min-width:3.4em;padding:0 2px;text-align:left;border-bottom:2px dashed rgba(11,11,11,.35);vertical-align:baseline;transition:border-color .2s}
+.bb-txt{white-space:pre}
+.bb-caret{display:none;position:relative;top:.08em;width:2px;height:.95em;margin-left:1px;background:var(--or);vertical-align:baseline;animation:bbCaret 1s steps(1) infinite}
+.stk-bubble.typing .bb-caret{display:inline-block}
+.stk-bubble.typing .bb-slot{border-bottom-color:var(--or)}
+@keyframes bbCaret{50%{opacity:0}}
+.stk-bubble.solved .bb-slot{border-bottom:2px solid var(--or);color:var(--or)}
+.stk-bubble.solved{animation:bbPop .45s cubic-bezier(.34,1.56,.64,1)}
+@keyframes bbPop{40%{scale:calc(var(--sz,1) * 1.15)}}
+.bb-in{position:absolute;left:0;top:0;width:1px;height:1px;opacity:0;pointer-events:none;border:0;padding:0;font-size:16px}
+.stk-bubble::after{content:"";position:absolute;left:18px;bottom:-10px;border:10px solid transparent;border-top-color:#f4f1ea;border-bottom:0}
+.stk-todo{left:2%;top:37%;--rot:4deg;display:block;padding:9px 14px;border-radius:6px;background:#1c1c1c;box-shadow:inset 0 0 0 1.5px #3a3a3a;color:var(--fog);font-size:14px;white-space:nowrap}
+.stk-todo i{font-style:normal;color:#7d7d7d}
+.stk-braces{right:1%;top:103%;width:84px;height:84px;--rot:-12deg;display:grid;place-items:center;border-radius:50%;background:var(--or);color:#0b0b0b;font-size:30px;font-weight:700;box-shadow:inset 0 0 0 4px var(--or),inset 0 0 0 6px #0b0b0b}
+.stk-load{left:44%;top:106%;--rot:-3deg;display:flex;align-items:center;gap:8px;padding:9px 12px;border-radius:8px;background:#0b0b0b;box-shadow:inset 0 0 0 2px var(--or);color:var(--or);font-size:12px;white-space:nowrap}
+.ld-bar{display:flex;gap:2px;padding:2px;border-radius:3px;box-shadow:inset 0 0 0 1.5px var(--or)}
+.ld-bar i{display:block;width:7px;height:12px;border-radius:1px;background:transparent;box-shadow:inset 0 0 0 1px rgba(254,119,0,.4);transition:background .08s}
+.ld-bar i.on{background:var(--or)}
+.ld-bar i.blink{animation:ldBlink 1.1s steps(1) infinite}
+@keyframes ldBlink{50%{background:var(--or)}}
+.ld-pc{font-weight:700;min-width:3.4em;text-align:right}
+.ld-main{position:relative;z-index:1;display:flex;align-items:center;gap:8px;transition:opacity .25s}
+.ld-fill{position:absolute;inset:0;z-index:0;border-radius:8px;background:#35d265;transform:scaleX(0);transform-origin:left center;transition:transform .8s cubic-bezier(.65,0,.35,1)}
+.stk-load.filled .ld-fill{transform:scaleX(1)}
+.stk-load.filled .ld-main{opacity:0}
+.ld-done{position:absolute;inset:0;z-index:1;display:flex;align-items:center;justify-content:center;gap:6px;color:#062b12;font-size:14px;font-weight:700;opacity:0;transform:scale(.8);transition:opacity .3s,transform .4s cubic-bezier(.34,1.56,.64,1)}
+.ld-done svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:30;stroke-dashoffset:30;transition:stroke-dashoffset .4s .15s}
+.stk-load.completed .ld-done{opacity:1;transform:none}
+.stk-load.completed .ld-done svg{stroke-dashoffset:0}
+.stk-load.filled{box-shadow:inset 0 0 0 2px #35d265}
+.stk-sword{left:32%;top:50%;width:86px;height:86px;--rot:-6deg}
+.stk-sword .pix{display:block;width:100%;height:100%}
+.stk-plane{left:4%;top:104%;width:86px;--rot:52deg}
+.stk-plane .plane{display:block;width:100%;height:auto;overflow:visible}
+.stk-plane path{stroke:#0b0b0b;stroke-width:3.5;stroke-linejoin:round}
+.stk-plane .pl-w1{fill:#f4f1ea}.stk-plane .pl-w2{fill:var(--or)}.stk-plane .pl-f1{fill:#cfc8bc}.stk-plane .pl-f2{fill:#b35400}
+.stk.flying{transition:none!important;pointer-events:none;scale:var(--sz,1)!important}
+.pl-dot{position:absolute;z-index:9998;width:7px;height:7px;margin:-3.5px 0 0 -3.5px;border-radius:2px;background:var(--or);pointer-events:none;transition:opacity .9s ease,scale .9s ease}
+.pl-dot.fade{opacity:0;scale:.3}
+.stk-heart .hh{position:absolute;top:0;width:70px;height:60px;fill:#e5262f;transition:transform .25s cubic-bezier(.2,.8,.3,1)}
+.stk-heart .hh .hl{fill:#ff9a9e}
+.stk-heart.broken > .hh-l{left:0;animation:hhL .08s steps(2) forwards}
+.stk-heart.broken > .hh-r{left:0;animation:hhR .08s steps(2) forwards}
+@keyframes hhL{to{transform:translateX(-4px)}}
+@keyframes hhR{to{transform:translateX(4px)}}
+.stk-heart.broken{height:60px;pointer-events:none}
+.stk-heart.broken .rot-h{display:none}
+.stk-heart.hurt > svg{animation:heartHurt .4s linear}
+@keyframes heartHurt{0%{transform:translate(0,0);filter:brightness(2.2)}15%{transform:translate(-4px,1px)}30%{transform:translate(4px,-1px);filter:brightness(1)}45%{transform:translate(-3px,0)}60%{transform:translate(3px,1px)}80%{transform:translate(-1px,0)}100%{transform:none}}
+.h-shard{position:absolute;left:0;top:0;z-index:9998;background:#e5262f;pointer-events:none;margin:-4px 0 0 -4px}
+.stk.falling{pointer-events:none;animation:stkFall .9s cubic-bezier(.5,0,.9,.6) forwards}
+@keyframes stkFall{0%{scale:var(--sz,1);opacity:1;filter:drop-shadow(0 4px 6px rgba(0,0,0,.65)) brightness(1)}
+80%{opacity:1}
+100%{scale:calc(var(--sz,1) * .04);opacity:0;rotate:calc(var(--rot,0deg) + var(--tilt,0deg) + 40deg);filter:drop-shadow(0 0 0 rgba(0,0,0,0)) brightness(.35)}}
+.stk.falling-big{animation-duration:1.05s}
+/* the crack left in the page by a maxed-out falling sign */
+.crack{position:absolute;z-index:60;pointer-events:none;overflow:visible}
+.crack .hole-pop{transform:scale(0);transform-box:fill-box;transform-origin:center;transition:transform .45s cubic-bezier(.34,1.7,.5,1)}
+.crack.on .hole-pop{transform:scale(1)}
+.crack .hole-out{fill:#0b0b0b;stroke:#0b0b0b;stroke-width:9;stroke-linejoin:miter;transform:translate(4px,5px)}
+.crack .shards polygon{fill:#141414;stroke:var(--or);stroke-width:1.6;stroke-linejoin:miter}
+.crack .hole-rim{fill:none;stroke:var(--or);stroke-width:4;stroke-linejoin:miter;stroke-miterlimit:12;filter:drop-shadow(0 0 0 #0b0b0b)}
+.crack .bin{font:600 11px/1 'Montserrat',monospace;fill:#3dff7a;opacity:0;transition:opacity .5s .35s;filter:drop-shadow(0 0 3px rgba(61,255,122,.75))}
+.crack.on .bin{opacity:1}
+.crack .bin-scroll{animation:binScroll 6s linear infinite}
+.crack.idle .bin-scroll{animation-play-state:paused} /* off screen or in a background tab (js/stickers.js crackAt) */
+@keyframes binScroll{to{transform:translateY(calc(var(--h) * -1))}}
+main.quake{animation:quake .65s cubic-bezier(.2,.6,.3,1)}
+@keyframes quake{0%{translate:0 0}10%{translate:-9px 6px}20%{translate:8px -7px}30%{translate:-7px -4px}40%{translate:6px 5px}55%{translate:-4px 2px}70%{translate:3px -2px}85%{translate:-1px 1px}100%{translate:0 0}}
+@media (prefers-reduced-motion:reduce){main.quake{animation:none}}
+.stk-warn:hover{scale:calc(var(--sz,1) * 1.01)}
+.stk-circle .stk-b{font-size:22px}
+@media (max-width:600px){.stk-circle .stk-b{font-size:17px}}
+/* friction sparks off the heavy sign */
+.spark{position:absolute;z-index:999;width:7px;height:1.5px;margin:-.75px 0 0 -3.5px;border-radius:1px;background:linear-gradient(90deg,rgba(255,170,60,0),#ffc36b);opacity:.85;pointer-events:none;animation:sparkFly .25s linear forwards}
+@keyframes sparkFly{0%{opacity:.9;transform:translate(0,0) rotate(var(--a)) scaleX(.4)}100%{opacity:0;transform:translate(var(--vx),var(--vy)) rotate(var(--a)) scaleX(1)}}
+.stk.home{transition:translate .7s cubic-bezier(.34,1.56,.64,1),scale .3s,rotate .3s,filter .3s}
+.stk img{pointer-events:none;-webkit-user-drag:none}
+.stk-tag{left:5%;top:6%;width:240px;--rot:-6deg}
+.tag-top{display:block;padding:10px 10px 8px;border-radius:14px 14px 0 0;background:var(--or);color:#0b0b0b;text-align:center}
+.tag-hello{display:block;font-weight:900;font-size:34px;line-height:1;letter-spacing:.06em}
+.tag-my{display:block;font-weight:600;font-size:13px;letter-spacing:.04em}
+.tag-body{display:block;padding:16px 22px 18px;border-radius:0 0 14px 14px;background:#f4f1ea}
+.tag-body img{display:block;width:100%;height:auto}
+/* the wordmark's eyes (where the eyes sticker can merge in) and its black version that spreads from them */
+.tag-logo{position:relative;display:block}
+.tag-eyes{position:absolute;left:13.9%;top:29.5%;width:11.7%;height:28.5%;pointer-events:none}
+@property --r{syntax:'<number>';inherits:false;initial-value:0}
+.tag-black{position:absolute;inset:0;filter:brightness(0);opacity:0;--r:0;
+  -webkit-mask-image:radial-gradient(circle at 19.7% 43.7%,#000 calc(var(--r) * 1%),transparent calc(var(--r) * 1% + 7%));
+  mask-image:radial-gradient(circle at 19.7% 43.7%,#000 calc(var(--r) * 1%),transparent calc(var(--r) * 1% + 7%))}
+.stk-tag.blackened .tag-black{opacity:1;--r:130;transition:--r 2.2s cubic-bezier(.3,.45,.35,1)}
+.stk.merging{transition:none!important;pointer-events:none}
+.stk-circle{right:6%;top:5%;width:148px;height:148px;--rot:10deg;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;border-radius:50%;background:#f4f1ea;color:#0b0b0b;box-shadow:inset 0 0 0 6px #f4f1ea,inset 0 0 0 8px #0b0b0b}
+.stk-s{display:block;font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase}
+.stk-b{display:block;font-size:26px;font-weight:900;line-height:1.05;letter-spacing:-.02em}
+.stk-eyes{left:43%;top:33%;width:118px;height:118px;--rot:-4deg;border-radius:50%;background:#0b0b0b;box-shadow:inset 0 0 0 3px var(--or)}
+.ey{position:absolute;top:26%;height:46%;width:auto;transform-origin:50% 50%}
+.ey-l{left:27%}.ey-r{left:51%}
+.stk-eyes:hover .ey{animation:blink .36s linear}
+/* sticker dragged out of the About section: grows a bit, then shrinks away spinning (like the logo
+   collapsing at the end of Videos/Full.mp4) and pops back in where it was before that drag */
+.stk.poof{pointer-events:none;animation:stkPoof .56s linear forwards}
+@keyframes stkPoof{
+0%{scale:calc(var(--sz,1) * 1.1);opacity:1;rotate:var(--rot,0deg);animation-timing-function:cubic-bezier(.3,0,.4,1)}
+30%{scale:calc(var(--sz,1) * 1.32);opacity:1;rotate:calc(var(--rot,0deg) + 8deg);animation-timing-function:cubic-bezier(.6,0,.9,.45)}
+100%{scale:0;opacity:0;rotate:calc(var(--rot,0deg) - 110deg)}}
+.stk.pop-in{animation:stkPopIn .6s cubic-bezier(.34,1.56,.64,1) both}
+@keyframes stkPopIn{
+0%{scale:0;opacity:0;rotate:calc(var(--rot,0deg) - 30deg)}
+45%{opacity:1}
+100%{scale:var(--sz,1);opacity:1;rotate:var(--rot,0deg)}}
+@keyframes blink{0%{transform:scaleY(1)}11%,28%{transform:scaleY(.08)}45%,100%{transform:scaleY(1)}}
+.stk-burst{left:6%;top:50%;width:168px;height:168px;--rot:12deg}
+.burst{display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;height:100%;text-align:center;background:var(--or);color:#0b0b0b;clip-path:polygon(50% 0%,59% 12%,73% 5%,76% 20%,92% 19%,87% 34%,100% 42%,89% 53%,98% 67%,83% 71%,85% 87%,70% 84%,62% 98%,50% 88%,38% 98%,30% 84%,15% 87%,17% 71%,2% 67%,11% 53%,0% 42%,13% 34%,8% 19%,24% 20%,27% 5%,41% 12%)}
+.stk-note{right:5%;top:42%;width:196px;--rot:-5deg;display:block;padding:30px 18px 18px;border-radius:3px;background:#f4f1ea;color:#1a1a1a}
+.note-tape{position:absolute;left:50%;top:-12px;width:84px;height:26px;margin-left:-42px;background:rgba(254,119,0,.78);transform:rotate(3deg)}
+.stk-m s{text-decoration-thickness:2px;text-decoration-color:var(--or);opacity:.6}
+.stk-m{display:block;font-size:22px;line-height:1.25}
+.stk-warn{left:24%;top:66%;width:270px;--rot:-14deg;display:block;padding:11px 0;background:var(--or);color:#0b0b0b;text-align:center;font-weight:800;font-size:13px;letter-spacing:.16em;text-transform:uppercase}
+.stk-warn::before,.stk-warn::after{content:"";position:absolute;top:0;bottom:0;width:38px;background:repeating-linear-gradient(-45deg,#0b0b0b 0 7px,transparent 7px 14px)}
+.stk-warn::before{left:0}.stk-warn::after{right:0}
+.stk-pill{left:38%;top:82%;--rot:-3deg;display:block;padding:12px 18px;border-radius:999px;background:#0b0b0b;color:var(--or);box-shadow:inset 0 0 0 2px var(--or);font-size:14px;white-space:nowrap}
+@media (max-width:900px){.about-grid{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:600px){.stk-heart .hh{width:54px;height:46px}.stk-heart.broken{height:46px}.stk-sword{width:64px;height:64px}.stk-plane{width:92px;left:auto;right:34%;top:112%}.stk-todo{font-size:12px;top:38%}.stk-braces{width:66px;height:66px;font-size:24px;top:101%}.stk-load{left:4%;top:102%;font-size:11px}.ld-bar i{width:5px;height:10px}.stk-keys{top:94%;left:2%}.stk-heart{width:54px}.stk-heart > svg{width:54px;height:46px}.kc{font-size:13px;padding:6px 9px 10px}.stk-stamp{width:120px}.stk-stamp b{font-size:14px}.stk-bubble{font-size:16px}}
+@media (max-width:600px){.now{grid-template-columns:minmax(0,1fr) auto;padding:12px 6px}.now-k{grid-column:1 / -1}.board{height:540px}.stk-tag{width:180px}.tag-hello{font-size:26px}.stk-circle{width:116px;height:116px}.stk-b{font-size:21px}.stk-eyes{width:90px;height:90px;left:40%;top:36%}.stk-burst{width:130px;height:130px;top:52%}.stk-note{width:150px;top:44%}.stk-m{font-size:18px}.stk-warn{width:210px;left:16%}.stk-pill{left:26%;font-size:12px}}
+
+/* blink counter under the eyes sticker (dbgBlinks in js/sticker-rotate.js; started as debug, kept on purpose) */
+
+.lang-track{transition:translate .45s cubic-bezier(.22,1,.36,1)}
+.stk-rm{left:22%;top:113%;--rot:-3deg;font-size:13px}
+.stk-rm i{color:var(--or)}
+@media (max-width:600px){.board{height:600px}.stk-rm{left:1%;top:109.5%;--rot:-2deg;font-size:10.5px;padding:7px 11px}.stk-plane{right:4%;top:113%}}
+
+/* magnifying glass sticker */
+.stk-mag{left:-7%;top:57%;width:158px;height:158px;--rot:-8deg}
+.mag-lens{position:absolute;left:0;top:0;width:120px;height:120px;border-radius:50%;overflow:hidden;background:rgba(255,255,255,.05);box-shadow:inset 0 0 0 6px #0b0b0b,inset 0 0 0 9px var(--or),0 0 0 2px #0b0b0b}
+.mag-glare{position:absolute;inset:0;border-radius:50%;pointer-events:none;background:radial-gradient(circle at 32% 28%,rgba(255,255,255,.3),rgba(255,255,255,0) 30%)}
+.mag-handle{position:absolute;left:97px;top:101px;width:62px;height:20px;border-radius:7px;background:linear-gradient(#2a2a2a,#0b0b0b);box-shadow:inset 0 0 0 2px #0b0b0b,inset 0 2px 0 rgba(255,255,255,.12);rotate:45deg;transform-origin:0 50%}
+.mag-handle::before{content:"";position:absolute;left:-2px;top:2px;width:14px;height:16px;border-radius:3px;background:var(--or)}
+.mag-ov{position:absolute;z-index:3;border-radius:50%;overflow:hidden;pointer-events:none;background:var(--coal);display:none}
+.mag-ov.on{display:block}
+.mag-ov::after{content:"";position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at 32% 28%,rgba(255,255,255,.22),rgba(255,255,255,0) 30%),radial-gradient(circle,rgba(0,0,0,0) 78%,rgba(0,0,0,.25))}
+.mag-copy{position:absolute!important;left:0;top:0;margin:0!important;transform-origin:0 0;pointer-events:none}
+.mag-copy .sr{animation:none!important;opacity:1!important;transform:none!important;filter:none!important;translate:none!important}
+@media (max-width:600px){.stk-mag{left:auto;right:2%;top:-12%;width:122px;height:122px}.stk-mag .mag-lens{width:94px;height:94px}.stk-mag .mag-handle{left:76px;top:79px;width:50px;height:17px}}
+
+/* stickers keep JetBrains Mono (like the terminal) — leave them out of any site-wide font swap */
+.stk .mono{font-family:'JetBrains Mono',ui-monospace,monospace}
+.kc{font:800 16px/1 'JetBrains Mono',monospace}
+.kc-plus{font:800 18px/1 'JetBrains Mono',monospace}

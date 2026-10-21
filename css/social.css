@@ -1,0 +1,43 @@
+/* rekosk.dev: the Social media section and its reels */
+/* Social media: text left, reel scroller right (one reel per page, arrows page through, last page = "More here:" + the Instagram button) */
+.soc-grid{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:clamp(32px,5vw,72px);align-items:center}
+.soc-text .about-p{margin-bottom:30px}
+.reels{display:flex;align-items:center;gap:18px}
+.reel-view{width:min(340px,78vw);aspect-ratio:9/17;overflow:hidden;border-radius:26px;background:#141414;box-shadow:0 0 0 2px #383838,0 24px 60px rgba(0,0,0,.45)}
+.reel-track{height:100%;transition:transform .7s cubic-bezier(.65,0,.25,1)}
+.reel-page{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;padding:14px}
+.reel-phone{position:relative;width:100%;height:100%;border-radius:16px;overflow:hidden;background:#0b0b0b;box-shadow:inset 0 0 0 2px #2c2c2c}
+.reel-frame{position:absolute;inset:0;width:100%;height:100%;border:0;background:#fff}
+/* consent notice in front of each Instagram embed: nothing loads from Meta until "Load videos" */
+.reel-gate{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;gap:10px;padding:22px 20px;background:repeating-linear-gradient(-45deg,#151515 0 14px,#121212 14px 28px);overflow:auto}
+.embeds-on .reel-gate{display:none}
+.gate-ig{width:34px;height:34px;color:var(--or);rotate:-8deg;fill:currentColor}
+.gate-h{margin:0;font-size:22px;line-height:1.2;font-weight:600;color:var(--white)}
+.gate-p{margin:0;font-size:13.5px;line-height:1.6;color:var(--mid)}
+.gate-btn{align-self:flex-start;min-height:48px;margin-top:6px;padding:0 22px;font-size:15px;font-weight:700}
+.gate-btn:focus-visible,.gate-alt:focus-visible{outline:2px dashed var(--or);outline-offset:3px}
+.gate-alt{align-self:flex-start;font-size:13px}
+.reel-more .lead{margin:0;text-align:center}
+.reel-slot{display:block;min-height:54px}
+.reel-nav{display:flex;flex-direction:column;align-items:center;gap:12px}
+.reel-btn{display:grid;place-items:center;width:48px;height:48px;padding:0;border:0;border-radius:50%;background:transparent;color:var(--white);box-shadow:inset 0 0 0 2px #383838;cursor:pointer;transition:color .3s,box-shadow .3s,transform .3s cubic-bezier(.34,1.56,.64,1),opacity .3s}
+.reel-btn svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.reel-btn:hover:not(:disabled){color:var(--or);box-shadow:inset 0 0 0 2px var(--or)}
+.reel-up:hover:not(:disabled){transform:translateY(-3px)}
+.reel-down:hover:not(:disabled){transform:translateY(3px)}
+/* hover edge fix: while it's hovered, an invisible copy of the box stays where the box was before it moved, so a
+   cursor on its last pixels keeps the hover instead of rapidly losing and getting it back */
+.reel-up:hover:not(:disabled)::after,.reel-down:hover:not(:disabled)::after{content:"";position:absolute;inset:-2px;border-radius:50%;z-index:-1}
+.reel-up:hover:not(:disabled)::after{transform:translateY(3px)}
+.reel-down:hover:not(:disabled)::after{transform:translateY(-3px)}
+.reel-btn:disabled{opacity:.3;cursor:default}
+.reel-btn:focus-visible{outline:2px dashed var(--or);outline-offset:4px}
+.reel-dots{display:flex;flex-direction:column;gap:7px}
+.reel-dots i{width:7px;height:7px;border-radius:50%;background:#383838;transition:background .3s,transform .3s}
+.reel-dots i.on{background:var(--or);transform:scale(1.3)}
+.btn-ig.flying{pointer-events:none;box-shadow:0 14px 34px rgba(0,0,0,.45)}
+@media (max-width:900px){.soc-grid{grid-template-columns:minmax(0,1fr)}.reels{justify-content:center}}
+@media (prefers-reduced-motion:reduce){.reel-track{transition:none}}
+
+/* social title: the one-line highlight must not run under the reels phone when the columns get narrow */
+@media (min-width:901px) and (max-width:1250px){#social .soc-text .lead{font-size:clamp(16px,1.9vw,22px)}}

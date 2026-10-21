@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- the map's fish (same shape as the jumping ones), the golden giant -->
+  <circle cx="33" cy="32" r="27" fill="#ffc531" opacity=".16"/>
+  <g><path d="M10 9L11.4 12.6L15 14L11.4 15.4L10 19L8.6 15.4L5 14L8.6 12.6Z" fill="#ffe08a"/><path d="M54 43.8L55.176 46.824L58.2 48L55.176 49.176L54 52.2L52.824 49.176L49.8 48L52.824 46.824Z" fill="#ffe08a"/><path d="M51 9L51.84 11.16L54 12L51.84 12.84L51 15L50.16 12.84L48 12L50.16 11.16Z" fill="#ffe08a"/><path d="M12 47.4L12.728 49.272L14.6 50L12.728 50.728L12 52.6L11.272 50.728L9.4 50L11.272 49.272Z" fill="#ffe08a"/></g>
+  <g transform="translate(33 32) rotate(-12) scale(2.82)" stroke="#0b0b0b" stroke-width="0.84" stroke-linejoin="round">
+    <path d="M-7 0L-12.5-4.5L-11.5 0L-12.5 4.5Z" fill="#ffe08a"/>
+    <path d="M9 0C6-5.5-4-6-8 0C-4 6 6 5.5 9 0Z" fill="#ffc531"/>
+    <path d="M-1-4.6L1-8L4-4.2Z" fill="#ffe08a"/>
+    <circle cx="4.6" cy="-1" r="1" fill="#0b0b0b" stroke="none"/>
+  </g>
+</svg>

@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- trail of little squares, curling up from the bottom left like the plane's real trail -->
+  <g fill="#fe7700">
+    <rect x="5" y="52" width="4" height="4" transform="rotate(-30 7 54)" opacity=".35"/>
+    <rect x="11.5" y="47.5" width="4" height="4" transform="rotate(-38 13.5 49.5)" opacity=".5"/>
+    <rect x="17" y="42" width="4.5" height="4.5" transform="rotate(-44 19.25 44.25)" opacity=".7"/>
+    <rect x="22" y="36.5" width="5" height="5" transform="rotate(-45 24.5 39)" opacity=".9"/>
+  </g>
+  <!-- the site's paper plane, nose to the top right -->
+  <g transform="translate(38 27) rotate(45) scale(.5) translate(-50 -50)" stroke="#0b0b0b" stroke-width="5" stroke-linejoin="round">
+    <path d="M50 4 L8 88 L44 76 Z" fill="#f4f1ea"/>
+    <path d="M50 4 L44 76 L50 92 Z" fill="#cfc8bc"/>
+    <path d="M50 4 L50 92 L56 76 Z" fill="#b35400"/>
+    <path d="M50 4 L92 88 L56 76 Z" fill="#fe7700"/>
+  </g>
+</svg>
